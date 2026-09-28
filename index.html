@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="assets/logo-uta.png">
+<meta name="version" content="1">
+<meta name="description" content="Tutor de estudio con IA para Tecnología de la Información y Comunicación, Medicina 1.er nivel, UTA.">
+<title>Tutor de TIC para Medicina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --ground:#FFFFFF; --surface:#FFFFFF; --surface-2:#FFFFFF; --ink:#231A1B; --muted:#5F6368; --line:#E8E1E1;
+  --accent:#C8102E; --accent-ink:#FFFFFF; --accent-soft:#FDECEF; --ochre:#8D0809; --ochre-soft:#FBEDEC;
+  --navy:#282165; --teal:#016C9A;
+  --ok:#23794A; --ok-soft:#E3F3E9; --bad:#B23B2E; --bad-soft:#FBE7E4;
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px;
+}
+*{box-sizing:border-box}
+.uta-band{height:5px;background:linear-gradient(90deg,#8D0809 0 50%,#DE1130 50% 100%);border-radius:0 0 4px 4px}
+header.top{display:grid!important;grid-template-columns:auto 1fr auto;align-items:center;gap:24px!important}
+.logo{height:96px;width:auto;display:block}
+.logo.med{height:108px}
+.htext{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.htext .sub{margin-inline:auto}
+@media (max-width:640px){header.top{grid-template-columns:1fr 1fr;gap:14px!important}.htext{grid-column:1/-1;grid-row:2}.logo{height:68px}.logo.med{height:76px;justify-self:end}}
+header.top h1{color:var(--accent)}
+nav.tabs button[aria-selected="true"]{background:var(--accent)!important;color:var(--accent-ink)!important}
+.concept{border-top-color:var(--accent)}
+.ra .mono{color:var(--teal)}
+.chain .node{background:var(--accent-soft)}
+.pyramid div{background:var(--navy);color:#fff}
+.msg.user{background:var(--navy);color:#fff}
+.msg.bot .who{color:var(--accent)}
+html{color-scheme:light;background:#FFFFFF}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.keybox{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.keybox input{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--ground);width:100%}
+.keybox a{color:var(--accent);font-weight:600}
+.pill{cursor:pointer}
+body{background:#FFFFFF;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--serif);font-weight:650;text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* header */
+header.top{padding-block:22px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line)}
+header.top h1{font-size:clamp(28px,4.4vw,40px);letter-spacing:-.01em}
+header.top .sub{color:var(--muted);max-width:60ch;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.pill.on{background:var(--accent-soft);color:var(--accent);border-color:transparent}.pill.on .dot{background:var(--accent)}
+
+/* nav */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);display:flex;gap:4px;overflow-x:auto;padding-block:10px;margin-bottom:22px;border-bottom:1px solid var(--line);scrollbar-width:none}
+nav.tabs button{flex:none;border:0;background:transparent;padding:8px 14px;border-radius:8px;font-weight:600;color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--ground)}
+nav.tabs button:hover:not([aria-selected="true"]){background:var(--surface-2);color:var(--ink)}
+
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--accent-ink)}
+.btn.small{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.link{border:0;background:none;padding:0;color:var(--accent);font-weight:600;font-size:13.5px;text-decoration:underline;text-underline-offset:3px}
+
+/* tutor */
+.tutor{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@media (max-width:860px){.tutor{grid-template-columns:minmax(0,1fr)}.tutor aside{order:-1}}
+.chat{background:var(--surface);box-shadow:0 1px 3px rgba(35,26,27,.06);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;min-height:520px}
+.msgs{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:62vh}
+.msg{max-width:88%;padding:12px 14px;border-radius:12px;line-height:1.6}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--ground);border-bottom-right-radius:4px;white-space:pre-wrap}
+.msg.bot{align-self:flex-start;background:var(--surface-2);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.bot .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.msg.note{align-self:center;background:var(--ochre-soft);color:var(--ink);font-size:13.5px;max-width:100%}
+.md p+p,.md p+ul,.md ul+p,.md p+ol,.md ol+p,.md h4+p,.md p+h4,.md ul+h4,.md ol+h4{margin-top:8px}
+.md ul,.md ol{margin:6px 0 0;padding-left:20px}.md li+li{margin-top:3px}
+.md h4{font-family:var(--serif);font-size:15.5px;margin:0}
+.md code{font-family:var(--mono);font-size:12.5px;background:var(--surface);padding:1px 5px;border-radius:4px}
+.thinking{color:var(--muted);font-style:italic}
+.composer{border-top:1px solid var(--line);padding:12px;display:flex;gap:10px;align-items:flex-end}
+.composer textarea{flex:1;resize:none;min-height:46px;max-height:160px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:var(--ground)}
+.composer textarea:focus{outline:none;border-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{max-width:100%;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;text-align:left}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+aside .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.field .lbl{font-size:12.5px;font-weight:700;color:var(--muted)}
+select{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--ground)}
+.seg{display:grid;grid-template-columns:1fr;gap:6px}
+.seg button{text-align:left;border:1px solid var(--line);background:var(--ground);border-radius:8px;padding:8px 10px;font-size:13.5px}
+.seg button b{display:block;font-size:14px}
+.seg button span{color:var(--muted);font-size:12.5px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.seg button[aria-pressed="true"] b{color:var(--accent)}
+.hint{font-size:12.5px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fallback{background:var(--ochre-soft);border-radius:10px;padding:12px;font-size:13.5px}
+
+/* program + content */
+.intro{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:26px}
+@media (max-width:860px){.intro{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.intro{grid-template-columns:1fr}}
+.ra{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.ra .mono{color:var(--ochre)}
+.ra h3{font-size:16px;margin:4px 0 6px}
+.ra p{font-size:13.5px;color:var(--muted)}
+.subtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.subtabs button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;text-align:left;font-size:13.5px}
+.subtabs button .mono{display:block;color:var(--muted);font-size:11px}
+.subtabs button[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,30px)}
+.sheet-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:18px}
+.sheet h2{font-size:clamp(22px,3vw,28px);max-width:30ch}
+.lead{color:var(--muted);max-width:68ch;margin-top:8px}
+.sec{margin-top:26px}
+.sec>h3{font-size:17px;margin-bottom:10px}
+.concepts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.concept{border-top:2px solid var(--accent);background:var(--ground);padding:12px 12px 10px;border-radius:0 0 8px 8px;display:flex;flex-direction:column;gap:6px}
+.concept b{font-size:14.5px}
+.concept p{font-size:13.5px;color:var(--muted);flex:1}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.chain .node{background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:6px 10px;font-size:13.5px;font-weight:600}
+.chain .arr{color:var(--accent);font-weight:700}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-weight:700;font-size:12.5px}
+tr:last-child td{border-bottom:0}
+.qlist{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none}
+.qlist li{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;background:var(--ground);border-radius:8px;padding:10px 12px}
+.qlist li span{flex:1}
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:4px;max-width:440px}
+.pyramid div{color:var(--accent-ink);background:var(--accent);text-align:center;padding:8px 6px;border-radius:4px;font-size:13px;font-weight:600}
+.pyramid small{display:block;font-weight:500;opacity:.85;font-family:var(--mono);font-size:11px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.card{background:var(--ground);border-radius:10px;padding:14px}
+.card h4{margin:0 0 6px;font-size:14.5px}
+.card p{font-size:13.5px;color:var(--muted)}
+
+/* PAE */
+.pae-badge{display:inline-block;background:var(--ochre-soft);color:var(--ochre);font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:5px;font-weight:500}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);margin-top:10px}
+.meta b{color:var(--ink)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:14px}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--muted)}
+.practice{border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.practice textarea{width:100%;min-height:110px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--ground)}
+.feedback{background:var(--accent-soft);border-radius:8px;padding:12px}
+
+/* quiz + cards */
+.quizbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.score{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,26px)}
+.qcard .qsrc{color:var(--ochre)}
+.qcard h3{font-size:19px;margin:6px 0 16px;max-width:52ch}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--ground);border-radius:10px;padding:11px 14px;display:flex;gap:10px}
+.opt .k{font-family:var(--mono);color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.why{margin-top:14px;padding:12px;border-radius:8px;background:var(--surface-2);font-size:14px}
+.why b.okc{color:var(--ok)}.why b.badc{color:var(--bad)}
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.fc{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px;min-height:150px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.fc .mono{color:var(--muted)}
+.fc b{font-family:var(--serif);font-size:17px}
+.fc p{font-size:13.5px;color:var(--ink)}
+.fc[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.fc .tap{margin-top:auto;font-size:12px;color:var(--muted)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.concept,.card,.qlist li,.fc,.opt,.seg button,.why,.msg.bot,.subtabs button,.ra{border:1px solid var(--line)}
+.concept{border-top:2px solid var(--accent)}
+nav.tabs{background:#FFFFFF}
+
+/* cuadros de texto con tinte UTA */
+.concept,.card,.qlist li,.ra,.fc,.practice{background:#FCEFF1!important;border-color:#F2D2D8!important}
+.concept{border-top:2px solid var(--accent)!important}
+.concept p,.card p,.ra p{color:#4A3F41}
+.practice textarea{background:#FFFFFF}
+.fc[aria-pressed="true"]{background:#F9DDE2!important;border-color:var(--accent)!important}
+.qlist li .btn{background:#FFFFFF}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="uta-band" aria-hidden="true"></div>
+  <header class="top">
+    <img class="logo uta" src="assets/logo-uta.png" alt="Universidad Técnica de Ambato">
+    <div class="htext">
+      <div class="eyebrow">Facultad de Ciencias de la Salud · Carrera de Medicina · 1.<sup>er</sup> nivel · Julio–Diciembre 2026</div>
+      <h1>Tecnología de la Información y Comunicación</h1>
+      <p class="sub">Tutor de estudio sobre comunicación, herramientas colaborativas, búsqueda científica, hojas de cálculo y contenidos multimedia aplicados a la medicina.</p>
+      <button type="button" class="pill" id="aiPill"><span class="dot"></span><span id="aiPillTxt">Conectando tutor IA…</span></button>
+    </div>
+    <img class="logo med" src="assets/logo-medicina.jpg" alt="Carrera de Medicina, Facultad de Ciencias de la Salud, UTA">
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button role="tab" id="tab-tutor" data-view="tutor" aria-selected="true">Tutor IA</button>
+    <button role="tab" id="tab-semanas" data-view="semanas" aria-selected="false">Contenidos por unidad</button>
+    <button role="tab" id="tab-pae" data-view="pae" aria-selected="false">Talleres PAE</button>
+    <button role="tab" id="tab-quiz" data-view="quiz" aria-selected="false">Autoevaluación</button>
+    <button role="tab" id="tab-fichas" data-view="fichas" aria-selected="false">Fichas de conceptos</button>
+  </nav>
+
+  <!-- TUTOR -->
+  <section id="view-tutor" class="view">
+    <div class="tutor">
+      <div class="chat">
+        <div class="msgs" id="msgs" aria-live="polite"></div>
+        <form class="composer" id="composer">
+          <textarea id="q" rows="1" placeholder="Escribe tu pregunta. Ej.: ¿Cómo uso los operadores booleanos en PubMed?"></textarea>
+          <button class="btn primary" id="sendBtn" type="submit">Enviar</button>
+          <button class="btn" id="stopBtn" type="button" hidden>Detener</button>
+        </form>
+      </div>
+      <aside>
+        <div class="panel">
+          <div class="field">
+            <span class="lbl">Cómo quieres estudiar</span>
+            <div class="seg" id="modes">
+              <button type="button" data-mode="explicar" aria-pressed="true"><b>Explícame</b><span>Respuesta clara con ejemplos aplicados a la medicina</span></button>
+              <button type="button" data-mode="guiar" aria-pressed="false"><b>Guíame paso a paso</b><span>Preguntas socráticas, sin darte la respuesta</span></button>
+              <button type="button" data-mode="evaluar" aria-pressed="false"><b>Evalúame</b><span>Te hace preguntas y corrige tus respuestas</span></button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="focus">Tema de enfoque</label>
+            <select id="focus"></select>
+          </div>
+          <div class="field">
+            <span class="lbl">Para empezar</span>
+            <div class="chips" id="starters"></div>
+          </div>
+          <div class="row"><button class="link" type="button" id="clearBtn">Nueva conversación</button></div>
+          <div class="keybox" id="keyBox">
+            <span class="lbl" style="font-size:12.5px;font-weight:700;color:var(--muted)">Conectar la IA (Google Gemini)</span>
+            <p class="hint" id="keyState">Para activar el tutor, pega tu clave gratuita de Gemini. Obténla en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google.</p>
+            <label for="apiKey" class="hint">Clave API</label>
+            <input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
+            <div class="row">
+              <button class="btn small primary" type="button" id="saveKey">Guardar y probar</button>
+              <button class="btn small" type="button" id="delKey">Borrar clave</button>
+            </div>
+            <p class="hint">La clave se guarda solo en este navegador y se envía únicamente a Google. No escribas datos personales ni de pacientes en el chat.</p>
+          </div>
+          <p class="hint">El tutor ayuda a comprender y preparar los talleres. No redacta informes para entregar. Verifica siempre la información en fuentes confiables y nunca escribas datos reales de pacientes.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- SEMANAS -->
+  <section id="view-semanas" class="view" hidden>
+    <div class="intro" id="ras"></div>
+    <div class="subtabs" id="weekTabs" role="tablist" aria-label="Temas"></div>
+    <article class="sheet" id="weekSheet"></article>
+  </section>
+
+  <!-- PAE -->
+  <section id="view-pae" class="view" hidden>
+    <div class="subtabs" id="paeTabs" role="tablist" aria-label="Guías PAE"></div>
+    <article class="sheet" id="paeSheet"></article>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="view-quiz" class="view" hidden>
+    <div class="quizbar">
+      <div class="row">
+        <label for="quizFilter" class="hint">Tema</label>
+        <select id="quizFilter"></select>
+        <span class="score" id="score"></span>
+      </div>
+      <div class="row">
+        <button class="btn small" id="restartQuiz" type="button">Reiniciar</button>
+        <button class="btn small primary" id="genQuiz" type="button" hidden>Generar 5 preguntas nuevas con IA</button>
+      </div>
+    </div>
+    <div id="quizBox"></div>
+  </section>
+
+  <!-- FICHAS -->
+  <section id="view-fichas" class="view" hidden>
+    <p class="lead" style="margin:0 0 16px">Toca una ficha para ver la definición. Úsalas para repasar antes de un taller o de una evaluación.</p>
+    <div class="fc-grid" id="fcGrid"></div>
+  </section>
+
+  <footer>
+    <span class="mono">Versión 1 · 27/09/2026</span>
+    <span>Contenido elaborado a partir del sílabo, el programa analítico, las presentaciones de la Unidad 1 (temas 1.1 a 1.3) y las Guías de Prácticas de Aplicación y Experimentación (PAE) 1 a 6 de la asignatura Tecnología de la Información y Comunicación, Carrera de Medicina, UTA, ciclo julio–diciembre 2026.</span>
+    <span>Bibliografía básica: Campos E, Lima D, Fernández F, Alayola A. <i>Competencias digitales básicas para el médico general</i>. México: Editorial Médica Panamericana; 2021. · Complementaria: Delgado JM. <i>Office 2025</i>. Madrid: Anaya Multimedia; 2025.</span>
+  </footer>
+</div>
+
+<script>
+/* ============ CONTENIDO DEL CURSO ============ */
+const PROGRAMA = {
+  objetivo: "Aplicar las tecnologías de la información y la comunicación en actividades académicas y profesionales del ámbito de la salud, mediante el uso eficiente y ético de herramientas digitales para la gestión de información, análisis de datos y comunicación científica.",
+  ras: [
+    {n:"Unidad 1", t:"Comunicación y colaboración", d:"Reconoce los principios generales de la comunicación y su importancia mediante el uso de herramientas colaborativas digitales para optimizar la interacción con pacientes y la comunidad."},
+    {n:"Unidad 2", t:"Búsqueda y documentos científicos", d:"Emplea la búsqueda de información en bases de datos científicas mediante el diseño de una estrategia de búsqueda sistemática, para el desarrollo de documentos científicos."},
+    {n:"Unidad 3", t:"Hojas de cálculo y datos", d:"Produce hojas de cálculo, mediante el manejo de datos para el análisis descriptivo y su representación gráfica."},
+    {n:"Unidad 4", t:"Multimedia y difusión", d:"Emplea herramientas multimedia mediante principios de diseño, para una correcta divulgación de la información académica."}
+  ]
+};
+
+const SEMANAS = [
+ {id:"t11", n:"Tema 1.1", t:"Introducción a la comunicación", lead:"La comunicación es el intercambio de significados mediante un código compartido. En medicina, las TIC acompañan el dato clínico desde su obtención hasta la toma de decisiones.",
+  conceptos:[
+   ["¿Qué es la comunicación?","«Actividad de intercambio de información entre dos o más participantes que transmiten o reciben significados a través de un sistema compartido de signos y normas semánticas» (Sajid Lonngi). Ocurre entre seres humanos (lenguaje), organismos vivos (biosemiótica) y dispositivos (cibernética)."],
+   ["Hitos de la comunicación","Arte rupestre, escritura cuneiforme (c. 3200 a. C.), imprenta de Gutenberg (c. 1450), telégrafo (1844), teléfono (1876), ARPANET (1969), World Wide Web (1989–1991) y Web 2.0, telesalud e IA en el siglo XXI."],
+   ["Modelos teóricos","Aristóteles (orador, discurso, auditorio); Lasswell, 1948 (¿quién dice qué, por qué canal, a quién y con qué efecto?); Shannon y Weaver, 1949 (fuente, transmisor, canal, ruido, receptor, destino); Berlo, 1960 (modelo SMCR)."],
+   ["Elementos del proceso","Emisor (genera el mensaje), transmisor (codifica), canal (medio físico), receptor (decodifica), mensaje, efecto, ruido, retroalimentación y contexto o marco de referencia."],
+   ["Emisor ≠ transmisor","La fuente es el autor, no el medio. Citar «Google» como fuente es un error: Google es el canal de búsqueda, no el autor de la información."],
+   ["La «capta» del receptor","Cantidad de información que un receptor puede percibir. El médico decodifica lo verbal, la exploración física y los exámenes; nunca recibe todos los datos."],
+   ["Cierre prematuro","Error diagnóstico del médico como receptor: se queda con la primera hipótesis y deja de integrar información relevante."],
+   ["Barreras de comunicación","Lingüísticas (idioma, jerga médica, lengua de señas), culturales, físicas (discapacidad sensorial, ruido), tecnológicas (conectividad, interoperabilidad, brecha digital) y emocionales (dolor, miedo, desconfianza)."],
+   ["Comunicación clínica efectiva","Lenguaje claro, verificar comprensión con la técnica de devolución, escucha activa y empatía, apoyos tecnológicos (intérpretes, pictogramas, apps), registro completo en la historia clínica y confidencialidad."]
+  ],
+  cadena:{titulo:"El proceso de comunicación", nodos:["Emisor","Transmisor (codifica)","Canal","Receptor (decodifica)","Efecto"]},
+  cadena2:{titulo:"Las TIC en el ciclo del dato clínico", nodos:["Obtención","Almacenamiento","Manejo","Interoperabilidad","Decisión"]},
+  tabla:{titulo:"Elementos del proceso aplicados al caso clínico", cols:["Elemento","Definición","En el caso","Error frecuente"], filas:[
+   ["Emisor","Genera los datos del mensaje","Los dos pacientes sordomudos","Tecnicismos; citar «Google» como fuente"],
+   ["Transmisor","Codifica la información en señales","Las manos que describen la lengua de señas","Fallas técnicas, interoperabilidad, ruido"],
+   ["Canal","Medio físico del mensaje","La luz visible (señas)","Barreras físicas que distorsionan"],
+   ["Receptor","Decodifica e interpreta","El personal de urgencias","Falta de contexto, prejuicios, falta de empatía"],
+   ["Mensaje","Secuencia de signos o señales","Síntomas, antecedentes, mecanismo del accidente","Incompleto, ambiguo o desordenado"]]},
+  caso:"Dos pacientes adultos con múltiples lesiones por un accidente automovilístico llegan a urgencias de un hospital de segundo nivel. El personal descubre que son sordomudos. ¿Qué haría para brindar la atención? ¿Basta con buscar en Internet un traductor de lengua de señas? Caso local: un paciente waorani que solo habla su lengua nativa recibe en Puyo la explicación de su tratamiento para una probable influenza.",
+  preguntas:["¿Es lo mismo informar que comunicar? Explica la diferencia con un ejemplo.","Describe un malentendido entre médico y paciente que hayas vivido u observado.","¿Qué medios digitales usas para comunicarte con tu grupo? ¿Cuál es más eficaz y por qué?","¿Qué dificultaría comunicarte con un paciente que no comparte tu idioma o tu código?"],
+  sintesis:["La comunicación es intercambio de significados mediante un código compartido.","Emisor ≠ transmisor: la fuente es el autor, no el medio.","El ruido y el contexto pueden distorsionar el mensaje clínico.","La retroalimentación confirma que el paciente comprendió.","Las TIC amplían nuestra capacidad de ver, escuchar y entender."],
+  actividad:"En grupos de 4–5 (30 min): aplicar el modelo de Lasswell al caso, identificar ruido y barreras, buscar 2 herramientas digitales para pacientes con discapacidad auditiva, evaluar su confiabilidad y exponer en 3 minutos. Trabajo autónomo: lectura crítica de Montero Delgado et al., «Competencias digitales clave de los profesionales sanitarios», Educ Med 2020."
+ },
+ {id:"t12", n:"Tema 1.2", t:"Herramientas colaborativas", lead:"La nube permite al equipo de salud colaborar sin coincidir en lugar ni hora, siempre que proteja los datos del paciente.",
+  conceptos:[
+   ["6 competencias digitales","Alfabetización en salud digital, gestión de la información, comunicación sanitaria 2.0, creación de contenido, trabajo colaborativo en red y análisis y manejo de datos (Montero Delgado et al., 2020)."],
+   ["Internet vs. web","Internet es la infraestructura: red mundial de redes con protocolos TCP/IP (origen ARPANET, 1969). La web es un servicio sobre Internet: documentos enlazados (hipertexto) creados por Tim Berners-Lee en el CERN."],
+   ["Componentes de la web","Navegador, URL, HTTPS, DNS y servidor."],
+   ["Evolución de la web","Web 1.0: leer (páginas estáticas). Web 2.0: leer y escribir (blogs, wikis, redes, documentos compartidos). Web 3.0: interpretar (web semántica, IA, historia clínica interoperable)."],
+   ["¿Es confiable una página de salud?","Autoría, actualidad, evidencia (cita fuentes verificables), propósito (¿informa o vende?), institución (OMS, OPS, MSP, universidades) y seguridad (HTTPS, política de privacidad)."],
+   ["Computación en la nube","Acceso por red, bajo demanda, a recursos informáticos compartidos (NIST, 2011). Modelos: SaaS (Gmail, Docs, Microsoft 365, Zoom), PaaS (desarrollar sin gestionar servidores) e IaaS (servidores virtuales)."],
+   ["Herramientas por función","Almacenar (Drive, OneDrive, Dropbox), editar en tiempo real (Docs, Sheets, Office en línea), comunicarse (Teams, Meet, Zoom), organizar tareas (Trello, Planner), recolectar datos (Forms) y tomar notas (OneNote, Keep, Notion)."],
+   ["Plataformas virtuales","Aulas virtuales (Moodle, Classroom, Canvas), videoconferencia, telesalud y telemedicina (teleconsulta, teleinterconsulta, telemonitoreo) y formación continua (OpenWHO, Campus Virtual de Salud Pública de la OPS)."],
+   ["Herramientas en medicina","Historia clínica electrónica (PRAS del MSP), mensajería clínica segura, teleinterconsulta, PACS y visores DICOM, investigación en equipo (Zotero, Rayyan, REDCap) y casos clínicos anonimizados."],
+   ["Datos clínicos protegidos","Los datos de salud son datos sensibles (LOPDP, Ecuador 2021). Usar solo plataformas institucionales; nunca WhatsApp personal, Drive personal ni enlaces «cualquiera con el enlace» con datos de pacientes."]
+  ],
+  cadena:{titulo:"Cada etapa de la atención tiene su herramienta", nodos:["Consulta: historia clínica electrónica","Interconsulta: teleinterconsulta","Diagnóstico: PACS y laboratorio en red","Seguimiento: telemonitoreo"]},
+  cadena2:{titulo:"Investigar en equipo, de la pregunta al artículo", nodos:["Buscar: PubMed, BVS/LILACS","Gestionar: Zotero o Mendeley","Seleccionar: Rayyan","Recolectar: REDCap, KoboToolbox","Redactar: Word en línea, Docs, Overleaf"]},
+  tabla:{titulo:"Ventajas y riesgos de trabajar en la nube", cols:["Ventajas","Riesgos"], filas:[
+   ["Acceso desde cualquier lugar y dispositivo","Filtración por permisos mal configurados"],["Trabajo simultáneo con historial de versiones","Dependencia de la conectividad"],["Respaldo automático","Cuentas sin verificación en dos pasos"],["Menos correos y archivos duplicados","Datos de pacientes en cuentas personales"]]},
+  tabla2:{titulo:"Buenas prácticas para colaborar en línea", cols:["Práctica","Cómo aplicarla"], filas:[
+   ["Carpeta común ordenada","Estructura de carpetas acordada por el equipo"],["Nombres claros","Tema_Grupo_v01; evitar «final», «final2»"],["Permisos mínimos","Lector, comentarista o editor según el rol"],["Un solo archivo vivo","Historial de versiones y comentarios, no copias"],["Cuenta segura","Contraseña robusta y verificación en dos pasos"],["Correo institucional","Para todo trabajo académico y clínico"]]},
+  caso:"Un equipo de 6 internos con turnos rotativos debe preparar en una semana una campaña comunitaria de prevención del dengue. Las fichas, fotos, cronograma y material están dispersos en celulares, correos y memorias USB, con versiones diferentes. ¿Cómo organizarían el trabajo sin reunirse? ¿Qué riesgos tiene su forma actual de manejar la información?",
+  preguntas:["¿Por qué Internet no es lo mismo que la web?","¿Qué criterios usarías para decidir si una página de salud es confiable?","¿Qué riesgos tiene compartir un documento con la opción «cualquiera con el enlace»?","¿Qué plataformas son aptas y cuáles no para compartir datos clínicos?"],
+  sintesis:["Internet es la infraestructura; la web es un servicio sobre ella.","Evalúa autoría, actualidad, evidencia y propósito antes de confiar.","La nube permite colaborar sin coincidir en lugar ni hora.","Permisos mínimos, verificación en dos pasos y cuenta institucional.","Los datos de salud son sensibles: protégelos siempre."],
+  actividad:"Taller en grupos de 5–6 (45 min): crear una carpeta compartida con permisos por rol, redactar el plan de campaña en un documento colaborativo, asignar tareas con comentarios y menciones (@), diseñar un formulario de 5 preguntas sobre dengue y compartirlo con el docente como comentarista. Trabajo autónomo: ensayo de 600 a 800 palabras «La nube y el trabajo colaborativo en la atención de salud: oportunidades y riesgos»."
+ },
+ {id:"t13", n:"Tema 1.3", t:"Redes sociales e inteligencia artificial", lead:"Las redes sociales son canales masivos y permanentes. Bien usadas potencian la formación y la divulgación; mal usadas vulneran al paciente y a la profesión.",
+  conceptos:[
+   ["Red social digital","Servicio en línea para crear un perfil, conectarse y compartir contenidos. Tipos: generalistas (Facebook, Instagram, TikTok, X), profesionales (LinkedIn), académicas (ResearchGate, Academia.edu) y de mensajería (WhatsApp, Telegram, Discord)."],
+   ["Identidad digital profesional","Lo que publicas hoy es parte de tu currículum mañana. Herramientas: ORCID, perfil de Google Académico, LinkedIn y ResearchGate. Separa el perfil personal del profesional."],
+   ["Oportunidades y riesgos","Oportunidades: educación médica abierta (#FOAMed), divulgación, colaboración, alertas de salud pública. Riesgos: desinformación e infodemia, vulneración de la privacidad, daño reputacional, límites difusos médico-paciente."],
+   ["Principios bioéticos en redes","Autonomía (consentimiento explícito), beneficencia (contenido basado en evidencia), no maleficencia, justicia, confidencialidad (el secreto profesional aplica en línea) y profesionalismo."],
+   ["Marco normativo","Ley Orgánica de Protección de Datos Personales (Ecuador, 2021): los datos de salud son sensibles. Secreto profesional, consentimiento informado y reglamentos institucionales."],
+   ["Redes sociales médicas","Figure 1 (casos anonimizados y moderados), Sermo (foro de médicos verificados), Doximity, Medscape, Doctoralia y Student Doctor Network. Riesgos: reidentificación de casos raros y contenido patrocinado."],
+   ["IA en medicina","Diagnóstico por imagen, predicción de riesgo, documentación clínica, nuevos fármacos (AlphaFold), educación médica y asistentes de lenguaje (Claude, ChatGPT, Gemini)."],
+   ["Alucinación de la IA","Respuesta falsa dicha con total seguridad: referencias o DOI inventados, dosis erróneas, guías mezcladas. Protección: verificar en PubMed, guías de práctica clínica y bibliografía."],
+   ["Riesgos de la IA","Alucinaciones, privacidad del paciente (nunca ingresar datos identificables), sesgos en los datos y responsabilidad: la IA sugiere, el médico decide y firma."]
+  ],
+  tabla:{titulo:"Semáforo ético para publicar", cols:["Nivel","Ejemplos"], filas:[
+   ["Adelante","Compartir evidencia citando la fuente; divulgar prevención; participar en comunidades académicas; separar perfil personal y profesional"],
+   ["Precaución","Opinar sobre temas clínicos controvertidos; grupos de WhatsApp de trabajo; aceptar pacientes como contactos; casos docentes solo anonimizados y autorizados"],
+   ["Nunca","Fotos o videos de pacientes sin consentimiento; datos identificables (nombre, cama, historia, rostro, tatuajes); burlas; diagnosticar o prescribir en público; difundir información no verificada"]]},
+  cadena:{titulo:"Figure 1: cómo se publica un caso clínico", nodos:["Consentimiento del paciente","Anonimización","Revisión por moderadores","Discusión entre colegas"]},
+  caso:"Durante su rotación en emergencias, un estudiante publica en sus historias una foto «del turno más duro». No se ve el rostro del paciente, pero sí el monitor con su nombre, la pulsera de identificación y la cama. En pocas horas la imagen circula en grupos de WhatsApp. ¿Qué principios se vulneraron? ¿Qué consecuencias tiene para el paciente, el estudiante y la institución?",
+  preguntas:["Antes de publicar: ¿podría identificarse a alguien? ¿Tengo el consentimiento? ¿La información está verificada? ¿Lo diría frente a mi paciente o mi docente? ¿Me sentiría cómodo si quedara en internet para siempre?","Caso A: un interno explica en TikTok el lavado de manos citando a la OMS. ¿Verde, amarillo o rojo?","Caso B: un residente comparte en un grupo una radiografía con el nombre visible. ¿Qué principio vulnera?","Caso C: una estudiante recomienda por Instagram un antibiótico a un seguidor. ¿Cómo debió actuar?"],
+  sintesis:["Las redes sociales son canales de comunicación masivos y permanentes.","Bien usadas, potencian la formación, la investigación y la divulgación.","Tu identidad digital es parte de tu perfil profesional.","Confidencialidad y consentimiento: sin excepciones en línea.","Si dudas, no publiques. Con la IA: úsala para aprender, no para copiar, y verifica siempre."],
+  actividad:"En grupos de 4–5 (30 min): clasificar los casos A, B y C con el semáforo ético, indicar al menos un principio bioético por caso y proponer la versión correcta. Trabajo autónomo: mapa conceptual integrador de la Unidad 1 (CmapTools, Canva, Miro o Lucidchart) con al menos 3 ejemplos aplicados a la práctica médica."
+ },
+ {id:"u2", n:"Unidad 2", t:"Búsqueda de información y documentos científicos", lead:"Buscar con método, gestionar las referencias y redactar con formato académico. Contenidos: bases de datos, gestores bibliográficos (Mendeley, Zotero), procesador de texto y estilos de texto con normas de referencia.",
+  conceptos:[
+   ["Tipos de bases de datos","Bases científicas como PubMed, Scopus, Web of Science, ScienceDirect, SciELO, RedALyC y BVS/LILACS. Cada una tiene cobertura y acceso distintos; la guía PAE 2 pide usar al menos tres."],
+   ["Pregunta PICO","Estructura para formular una pregunta de investigación: P (población), I (intervención), C (comparación) y O/R (resultado). Delimita qué buscar."],
+   ["Descriptores MeSH y DeCS","Vocabularios controlados: MeSH (Medical Subject Headings, PubMed) y DeCS (Descriptores en Ciencias de la Salud, BVS, en español y portugués). Mejoran la precisión frente a palabras sueltas."],
+   ["Operadores booleanos","AND une conceptos distintos (reduce resultados), OR suma sinónimos (amplía resultados) y NOT excluye términos. Los paréntesis agrupan sinónimos."],
+   ["Criterios de inclusión y exclusión","Definen qué artículos entran: años de publicación (PAE 2: últimos 5 años), tipo de estudio, idioma (inglés, español, portugués), población y contexto."],
+   ["Diagrama PRISMA simplificado","Muestra el número de registros identificados, revisados, excluidos e incluidos en la revisión. Da trazabilidad al proceso de selección."],
+   ["Gestores bibliográficos","Mendeley y Zotero importan artículos, organizan carpetas y etiquetas, corrigen metadatos e insertan citas y bibliografía en Word con un complemento."],
+   ["Procesador de texto","Formato y configuración de página, estilos de títulos jerarquizados, saltos de página y secciones, índices automáticos (contenido, tablas, imágenes) e inserción de objetos con título y numeración."],
+   ["Estilo Vancouver","Norma de citación biomédica: citas numeradas en orden de aparición y lista de referencias en ese mismo orden."]
+  ],
+  cadena:{titulo:"Estrategia de búsqueda sistemática", nodos:["Tema delimitado","Pregunta PICO","Palabras clave y MeSH/DeCS","Operadores booleanos","Búsqueda en 3 bases","Criterios de selección","PRISMA"]},
+  tabla:{titulo:"Formato del documento académico (PAE 3)", cols:["Elemento","Requisito"], filas:[
+   ["Fuente","Arial o Times New Roman, tamaño 12"],["Interlineado","1,5 o 2"],["Márgenes","2,5 cm"],["Alineación","Justificada"],["Títulos","Jerarquizados mediante estilos"],["Organización","Saltos de página, secciones, carátula e índices automáticos"],["Recursos","Mínimo 10 imágenes, 2 tablas, 2 gráficos y 1 organizador gráfico, con título, numeración y fuente"]]},
+  caso:"Un grupo quiere revisar la evidencia sobre un tema clínico, pero busca en Google con frases largas, obtiene miles de resultados sin filtrar y cita páginas web sin autor. ¿Cómo convertirían el tema en una pregunta PICO y en una estrategia de búsqueda reproducible?",
+  preguntas:["¿Qué diferencia hay entre usar palabras clave libres y descriptores MeSH o DeCS?","¿Qué pasa con el número de resultados cuando usas AND y cuando usas OR?","¿Por qué conviene registrar la estrategia usada en cada base de datos?","¿Qué ventajas tiene generar las citas con Mendeley en lugar de escribirlas a mano?"],
+  sintesis:["Una buena búsqueda empieza con una pregunta bien delimitada (PICO).","Los descriptores y los booleanos hacen la búsqueda precisa y reproducible.","El gestor bibliográfico evita errores de citación.","Los estilos e índices automáticos dan orden al documento."],
+  actividad:"Ver PAE 2 (búsqueda bibliográfica y Mendeley) y PAE 3 (documento académico formal)."
+ },
+ {id:"u3", n:"Unidad 3", t:"Hojas de cálculo aplicadas a la medicina", lead:"Organizar datos clínicos, calcular con fórmulas y funciones, resumir con tablas dinámicas y tablas de frecuencia, y representar los resultados en gráficos.",
+  conceptos:[
+   ["Base de datos estructurada","Cada fila es un registro (un paciente) y cada columna una variable. Datos consistentes y registros completos facilitan el análisis."],
+   ["Formato de celdas y tablas","Títulos, bordes, alineación, ajuste de columnas y formato de tabla para organizar y visualizar la información."],
+   ["Validación de datos","Reglas que restringen lo que se puede escribir: listas (Sexo: M o F; tipo de sangre: A+, A−, B+, B−, AB+, AB−, O+, O−) y rangos numéricos (edad de 0 a 100)."],
+   ["Fórmulas y funciones","Operaciones que empiezan con «=»: multiplicación (=B2*C2), SUMA/AUTOSUMA, PROMEDIO, CONTAR.SI y SI para condiciones. En Excel en español se separan los argumentos con punto y coma."],
+   ["Tablas dinámicas","Resumen interactivo de una base de datos: conteos por diagnóstico, distribución por sexo, promedio de edad por especialidad. Se arman arrastrando campos a filas, columnas y valores."],
+   ["Gráficos dinámicos","Gráficos vinculados a la tabla dinámica; deben tener título descriptivo y representar bien el tipo de variable."],
+   ["Frecuencia absoluta y relativa","Absoluta: número de casos por categoría. Relativa: proporción sobre el total (se puede expresar en %). También se usan frecuencias acumuladas."],
+   ["Intervalos de clase","Agrupan una variable numérica en rangos de igual amplitud. Ej. PAE 5: peso neonatal en intervalos de 0,5 kg desde 2,0 hasta 4,5."],
+   ["Puntuación Apgar","Valoración del recién nacido de 0 a 10 al minuto y a los 5 minutos. La PAE 5 compara la frecuencia de puntuaciones de depresión neonatal según edad materna, con los criterios que indique el docente."]
+  ],
+  cadena:{titulo:"Del dato a la interpretación", nodos:["Registrar","Validar","Organizar (tabla)","Resumir (tabla dinámica / frecuencias)","Graficar","Interpretar"]},
+  tabla:{titulo:"¿Qué gráfico usar?", cols:["Tipo de variable o propósito","Gráfico sugerido"], filas:[
+   ["Categorías (diagnóstico, sexo, especialidad)","Barras o columnas"],["Proporciones de un total pequeño de categorías","Circular, con pocas categorías"],["Variable numérica agrupada en intervalos (peso)","Histograma"],["Comparar dos grupos (edad materna <20 y ≥20)","Barras agrupadas"]]},
+  caso:"Un servicio registra 250 pacientes en una hoja sin reglas: aparecen sexos escritos como «m», «Masc» y «F», edades de 150 años y tipos de sangre inexistentes. ¿Qué validaciones aplicarías antes de construir la tabla dinámica?",
+  preguntas:["¿Por qué los datos de práctica deben ser ficticios o anonimizados?","¿Qué diferencia hay entre frecuencia absoluta y relativa?","¿Cómo compruebas que una fórmula de factura se actualiza sola al cambiar un valor?","¿Qué gráfico elegirías para mostrar la distribución del peso neonatal y por qué?"],
+  sintesis:["Datos limpios y validados antes de analizar.","Las fórmulas automatizan y evitan errores de cálculo.","Las tablas dinámicas resumen miles de registros en segundos.","El gráfico debe corresponder al tipo de variable."],
+  actividad:"Ver PAE 4 (ficha de pacientes, tabla dinámica y factura médica) y PAE 5 (frecuencias, Apgar y peso neonatal)."
+ },
+ {id:"u4", n:"Unidad 4", t:"Multimedia y difusión de la información", lead:"Crear contenidos multimedia con principios de diseño y difundirlos de forma ética por canales digitales: videos, animaciones, presentaciones, blogs, portafolios, sitios web y redes sociales.",
+  conceptos:[
+   ["Contenidos multimedia","Integran texto, imagen, audio, video o animación para explicar temas de salud de forma clara y atractiva."],
+   ["Principios de diseño","Claridad, legibilidad (tipografía y contraste), organización visual, jerarquía de la información y coherencia de la identidad visual (logotipo, tipografía, línea gráfica)."],
+   ["Productos digitales en medicina","Presentaciones, infografías, carruseles, videos cortos o reels, historias ilustradas y recursos educativos para pacientes y comunidad."],
+   ["Medios de difusión","Blogs, portafolio digital, sitios web y redes sociales como Instagram o TikTok, con un perfil exclusivo para el proyecto."],
+   ["Plan de publicaciones","Cada contenido define objetivo, mensaje principal, formato, público y fuente científica o institucional de respaldo."],
+   ["IA como apoyo responsable","Puede ayudar a generar ideas, redactar, diseñar o editar, pero todo se revisa, se contrasta con fuentes científicas y se deja evidencia de su uso."],
+   ["Comunicación responsable en salud","Sin información falsa, sin diagnósticos ni recomendaciones individuales, sin datos personales y sin lenguaje estigmatizante."],
+   ["Métricas","Visualizaciones, alcance, reacciones, comentarios e interacciones para analizar el desempeño de una campaña."]
+  ],
+  cadena:{titulo:"Ciclo de una campaña digital en salud", nodos:["Tema y público","Identidad visual","Plan de 15 contenidos","Validación científica","Producción","Revisión ética","Publicación","Métricas"]},
+  tabla:{titulo:"Plan mínimo de contenidos (PAE 6)", cols:["Formato","Cantidad","Propósito"], filas:[
+   ["Videos cortos o reels","5","Explicar conceptos, prevención o situaciones educativas"],["Infografías o carruseles","5","Presentar datos, factores de riesgo y medidas preventivas"],["Publicaciones informativas o reflexivas","5","Reforzar mensajes de promoción de la salud"]]},
+  caso:"Una campaña sobre prevención de la hipertensión publica un video generado con IA que recomienda una dosis de un medicamento y usa una cifra sin fuente. ¿Qué revisiones científicas, técnicas y éticas se omitieron?",
+  preguntas:["¿Qué hace que una infografía de salud sea clara y legible?","¿Por qué cada publicación debe tener una fuente de respaldo?","¿Qué evidencias del uso de IA deberías guardar?","¿Qué métricas indican que un mensaje llegó al público objetivo?"],
+  sintesis:["El diseño está al servicio de la claridad del mensaje.","Todo contenido de salud se valida con fuentes confiables.","La IA apoya, pero el equipo revisa y responde por el contenido.","Las métricas permiten mejorar la campaña."],
+  actividad:"Ver PAE 1 (recurso educativo con Gemini Storybook) y PAE 6 (campaña digital en redes sociales)."
+ }
+];
+
+const PAES = [
+ {id:"p1", n:"PAE 1", t:"Creación colaborativa de presentaciones académicas aplicadas a la Medicina", unidad:"Unidad 1", horas:"4 h presenciales", habilidad:"Responsabilidad",
+  objetivo:"Identificar los principios generales de la comunicación y su importancia mediante el uso de herramientas colaborativas digitales para optimizar la interacción con pacientes y la comunidad.",
+  pasos:["Presentar y validar con el docente el tema médico o de salud pública, el público objetivo, el propósito educativo y el mensaje principal.","Organizar el contenido científico en una secuencia narrativa coherente para el público objetivo.","Elaborar un prompt detallado para Gemini Storybook: tema, público, mensaje central, personajes o escenario, tono y elementos educativos.","Generar la historia educativa ilustrada con Storybook y ajustarla.","Revisar el texto y las imágenes generados por la IA contrastándolos con las fuentes científicas.","Editar y mejorar el recurso: claridad, coherencia, comprensión y pertinencia.","Revisión ética y académica: lenguaje respetuoso, sin diagnósticos ni recomendaciones individuales.","Socializar el recurso explicando el proceso y las decisiones de revisión.","Entregar el recurso y las evidencias en el aula virtual (espacio APE 1. Recursos académicos)."],
+  resultado:"Reconoce los principios generales de la comunicación y su importancia mediante el uso de herramientas colaborativas digitales para optimizar la interacción con pacientes y la comunidad.",
+  checklist:["Tema, público objetivo y mensaje principal validados por el docente","Fuentes científicas o institucionales confiables seleccionadas","Prompt de Storybook guardado","Historia revisada y contrastada con las fuentes","Sin diagnósticos, recomendaciones individuales ni datos personales","Carpeta con fuentes, prompts, borradores y producto final","Recurso y evidencias subidos al aula virtual"],
+  practica:[
+   {q:"Escribe el prompt que usarás en Gemini Storybook.", ph:"Ej.: Crea una historia ilustrada para niños de 8 a 10 años sobre…", crit:"tema médico claro; público objetivo con edad y nivel; mensaje central; personajes o escenario; tono; elementos educativos; restricciones éticas (sin diagnósticos, sin datos personales)"},
+   {q:"Describe el público objetivo y el mensaje principal de tu recurso.", ph:"Público: … Mensaje principal: … Conceptos esenciales: …", crit:"público bien caracterizado (edad, conocimiento, necesidades); mensaje único y comprensible; coherencia entre público y mensaje"}
+  ],
+  recomendaciones:"Utilizar literatura científica actualizada (últimos 5 años), mantener coherencia visual y ensayar previamente la exposición."},
+ {id:"p2", n:"PAE 2", t:"Búsqueda bibliográfica y gestión de información científica con Mendeley", unidad:"Unidad 2", horas:"5 h presenciales", habilidad:"Trabajo en equipo",
+  objetivo:"Aplicar la búsqueda de información en bases de datos científicas mediante el diseño de una estrategia de búsqueda sistemática, para el desarrollo de documentos científicos.",
+  pasos:["Seleccionar y delimitar el tema; formular la pregunta PICO y validarla con el docente.","Diseñar la estrategia de búsqueda en al menos tres bases (PubMed, Scopus, Web of Science, ScienceDirect, SciELO, RedALyC) con palabras clave, MeSH/DeCS y operadores AND, OR, NOT; registrar cada estrategia.","Aplicar criterios de inclusión y exclusión (últimos 5 años, tipo de estudio, idioma, población) y seleccionar mínimo 25 artículos.","Importar y organizar los artículos en Mendeley con carpetas y etiquetas; corregir metadatos.","Documentar la selección y elaborar un diagrama PRISMA simplificado.","Redactar un documento de mínimo 10 páginas: introducción, metodología, resultados (con tabla comparativa: autor, año, diseño, muestra, hallazgos), discusión y conclusiones, con citas Vancouver."],
+  resultado:"Emplea la búsqueda de información en bases de datos científicas mediante el diseño de una estrategia de búsqueda sistemática, para el desarrollo de documentos científicos.",
+  checklist:["Pregunta PICO validada por el docente","Estrategia registrada en al menos 3 bases de datos","Criterios de inclusión y exclusión definidos","Mínimo 25 artículos de los últimos 5 años","Biblioteca de Mendeley con carpetas y etiquetas","Diagrama PRISMA simplificado","Tabla comparativa de estudios","Documento de mínimo 10 páginas con citas Vancouver"],
+  practica:[
+   {q:"Escribe tu pregunta de investigación en formato PICO.", ph:"P: … I: … C: … O: … Pregunta: ¿…?", crit:"los cuatro componentes identificados; población específica; resultado medible; pregunta delimitada y respondible"},
+   {q:"Escribe tu estrategia de búsqueda para PubMed.", ph:"(\"término MeSH\"[Mesh] OR sinónimo) AND (…) NOT …", crit:"uso de descriptores MeSH/DeCS; sinónimos agrupados con OR entre paréntesis; conceptos unidos con AND; uso justificado de NOT; filtros de años e idioma coherentes con los criterios"}
+  ],
+  recomendaciones:"Seleccionar un tema específico y clínicamente relevante, mantener rigor metodológico, usar Mendeley para organizar y citar, y redactar con claridad y ética académica."},
+ {id:"p3", n:"PAE 3", t:"Documento académico formal con Mendeley", unidad:"Unidad 2", horas:"5 h presenciales", habilidad:"Trabajo en equipo",
+  objetivo:"Aplicar la búsqueda de información en bases de datos científicas mediante el diseño de una estrategia de búsqueda sistemática, para el desarrollo de documentos científicos.",
+  pasos:["Presentar y validar el tema, su delimitación y justificación.","Buscar y seleccionar mínimo 20 artículos recientes (últimos 7 años) en bases académicas.","Organizar las referencias en Mendeley y corregir sus datos.","Configurar el documento: Arial o Times New Roman 12, interlineado 1,5 o 2, márgenes de 2,5 cm, justificado, títulos con estilos, saltos y secciones, carátula e índices automáticos de contenido, tablas e imágenes.","Redactar introducción y objetivos.","Desarrollar la revisión bibliográfica con redacción propia y citas Vancouver insertadas con Mendeley.","Integrar mínimo 10 imágenes, 2 tablas comparativas, 2 gráficos estadísticos y 1 organizador gráfico, con título, numeración y fuente.","Redactar la discusión: coincidencias, diferencias, fortalezas, limitaciones y vacíos.","Redactar conclusiones y generar las referencias Vancouver en orden de aparición."],
+  resultado:"Emplea la búsqueda de información en bases de datos científicas mediante el diseño de una estrategia de búsqueda sistemática, para el desarrollo de documentos científicos.",
+  checklist:["Tema validado por el docente","Mínimo 20 artículos de los últimos 7 años","Formato: fuente 12, interlineado 1,5 o 2, márgenes 2,5 cm, justificado","Títulos con estilos e índices automáticos","10 imágenes, 2 tablas, 2 gráficos y 1 organizador gráfico numerados y con fuente","Citas y referencias Vancouver generadas con Mendeley","Conclusiones con las 3 preguntas de reflexión"],
+  practica:[
+   {q:"¿Qué aprendí al utilizar herramientas del procesador de texto?", ph:"Escribe tu reflexión…", crit:"menciona herramientas concretas (estilos, índices, secciones, numeración); explica para qué sirvieron; reflexión propia"},
+   {q:"¿Cómo me ayudó el gestor bibliográfico en la organización del contenido?", ph:"Escribe tu reflexión…", crit:"funciones concretas de Mendeley (importar, etiquetas, metadatos, citas); impacto en la calidad de la citación; reflexión propia"},
+   {q:"¿De qué manera esta experiencia me servirá en futuros trabajos académicos o en mi profesión?", ph:"Escribe tu reflexión…", crit:"conexión con la práctica médica basada en evidencia; ejemplos concretos; reflexión propia"}
+  ],
+  recomendaciones:"No copiar y pegar: parafrasear y analizar; usar estilos coherentes; numerar imágenes y tablas automáticamente; revisar ortografía y normas de citación; citar todas las fuentes."},
+ {id:"p4", n:"PAE 4", t:"Documento en Excel para el análisis y gestión de datos clínicos", unidad:"Unidad 3", horas:"6 h presenciales", habilidad:"Trabajo en equipo",
+  objetivo:"Preparar hojas de cálculo, mediante el manejo de datos para el análisis descriptivo y su representación gráfica.",
+  pasos:["Hoja 1 – Ficha de pacientes: mínimo 250 registros ficticios con número de expediente, nombres y apellidos, edad, sexo, fecha de nacimiento, diagnóstico, fecha de ingreso, médico responsable, área o especialidad y tipo de sangre; con formato de tabla.","Validación de datos: sexo solo M o F; edad de 0 a 100; tipo de sangre solo A+, A−, B+, B−, AB+, AB−, O+, O−. Corregir registros incompletos o inconsistentes.","Hoja 2 – Tabla dinámica: pacientes por diagnóstico, distribución por sexo y promedio de edad por área o especialidad.","Gráfico dinámico con título descriptivo e interpretación breve de los resultados.","Hoja 3 – Factura médica: datos del paciente, fecha, mínimo 3 servicios, precio unitario, cantidad, subtotal, IVA y total.","Fórmulas: multiplicación para subtotales, SUMA/AUTOSUMA, cálculo del IVA, total automático y condicionales si hacen falta; probar cambiando valores.","Revisar el libro completo: tres hojas, 250 registros, validaciones, tablas dinámicas y fórmulas."],
+  resultado:"Produce hojas de cálculo, mediante el manejo de datos para el análisis descriptivo y su representación gráfica.",
+  checklist:["Hoja 1 con 250 registros ficticios y las 10 variables","Validaciones de sexo, edad y tipo de sangre funcionando","Hoja 2 con tabla dinámica (diagnóstico, sexo, edad por área)","Gráfico dinámico con título e interpretación","Hoja 3 con factura y fórmulas automáticas","Datos 100 % ficticios, sin personas reales"],
+  practica:[
+   {q:"Escribe las fórmulas que usarás en la factura (subtotal, suma, IVA y total) e indica en qué celdas.", ph:"Subtotal (D5): =B5*C5 …", crit:"referencias de celda correctas; multiplicación para subtotal; SUMA para el subtotal general; IVA calculado sobre el subtotal; total = subtotal + IVA; separador de argumentos correcto (;) en Excel en español"},
+   {q:"Escribe la interpretación de tu tabla o gráfico dinámico.", ph:"El diagnóstico más frecuente fue… La distribución por sexo…", crit:"describe la categoría más frecuente; menciona proporciones o comparaciones; no generaliza más allá de los datos simulados; lenguaje descriptivo claro"}
+  ],
+  recomendaciones:"Practicar antes con tablas y gráficos dinámicos, elegir el gráfico según el tipo de variable y verificar fórmulas y presentación antes de entregar."},
+ {id:"p5", n:"PAE 5", t:"Tablas dinámicas, frecuencias y gráficos en Excel para datos clínicos", unidad:"Unidad 3", horas:"6 h presenciales", habilidad:"Trabajo en equipo",
+  objetivo:"Preparar hojas de cálculo, mediante el manejo de datos para el análisis descriptivo y su representación gráfica.",
+  pasos:["Actividad 1 (4 h): organizar la matriz de neonatos proporcionada por el docente (Apgar al minuto y edad materna).","Construir la tabla de frecuencias de la puntuación Apgar al minuto.","Comparar la distribución del Apgar entre madres mayores y menores de 20 años con tablas dinámicas o filtros.","Graficar y comparar las distribuciones de ambos grupos.","Determinar en qué grupo hay mayor frecuencia de puntuaciones de depresión neonatal, según los criterios de la guía o del docente.","Actividad 2 (2 h): tabla de frecuencias del peso neonatal en intervalos de amplitud 0,5 desde 2,0 hasta 4,5.","Graficar la distribución del peso e identificar el intervalo con mayor frecuencia.","Elaborar los informes breves y subir el Excel y las respuestas a Moodle (Taller 5.1)."],
+  resultado:"Produce hojas de cálculo, mediante el manejo de datos para el análisis descriptivo y su representación gráfica.",
+  checklist:["Tabla de frecuencias del Apgar al minuto","Comparación por edad materna (<20 y ≥20 años)","Gráfico comparativo de ambos grupos","Grupo con mayor frecuencia de depresión neonatal identificado","Tabla de frecuencias del peso en intervalos de 0,5 (2,0 a 4,5)","Gráfico de la distribución del peso","Informes y respuestas subidos a Moodle"],
+  practica:[
+   {q:"Escribe tu interpretación de la comparación del Apgar según edad materna.", ph:"En el grupo de madres menores de 20 años…", crit:"compara frecuencias absolutas y relativas entre grupos; identifica el grupo con más puntuaciones de depresión neonatal según el criterio del docente; no hace diagnósticos individuales; menciona limitaciones de los datos"},
+   {q:"Describe cómo armarás los intervalos de peso y qué intervalo tuvo mayor frecuencia.", ph:"Intervalos: 2,0–2,5; 2,5–3,0; … El intervalo con mayor frecuencia fue…", crit:"intervalos de amplitud 0,5 sin solaparse; límites claros (incluido o excluido); interpretación basada en la tabla; gráfico adecuado (histograma o columnas)"}
+  ],
+  recomendaciones:"Mantener consistencia en las variables, redactar los informes con claridad y precisión, y revisar ortografía, formato y entrega."},
+ {id:"p6", n:"PAE 6", t:"Campaña digital en redes sociales aplicada a la divulgación en salud", unidad:"Unidad 4", horas:"6 h presenciales", habilidad:"Trabajo en equipo",
+  objetivo:"Aplicar herramientas multimedia mediante principios de diseño, para una correcta divulgación de la información académica.",
+  pasos:["Presentar el equipo (3 a 5 estudiantes), roles, tema, propósito, público objetivo y medio de difusión.","Definir nombre, objetivo comunicativo, propuesta de valor e identidad visual (logotipo, tipografía, línea gráfica).","Planificar 15 contenidos: 5 videos cortos o reels, 5 infografías o carruseles y 5 publicaciones informativas o reflexivas, cada uno con objetivo, mensaje, formato, público y fuente.","Buscar, seleccionar y validar la información científica de cada publicación.","Producir los 15 contenidos con criterios de claridad, legibilidad y organización visual.","Usar la IA de forma responsable y dejar evidencia de su uso.","Revisión científica, técnica y ética de las 15 publicaciones.","Publicar en un perfil exclusivo del proyecto en Instagram o TikTok, con referencias, créditos y recursos de interacción.","Recopilar y analizar métricas: visualizaciones, alcance, reacciones, comentarios e interacciones."],
+  resultado:"Emplea herramientas multimedia mediante principios de diseño, para una correcta divulgación de la información académica.",
+  checklist:["Equipo, roles, tema y público validados","Nombre, objetivo e identidad visual de la campaña","Plan de 15 contenidos con fuente de respaldo","5 videos, 5 infografías y 5 publicaciones producidas","Evidencia del uso de IA","Revisión científica y ética completada","Perfil exclusivo del proyecto con las publicaciones","Métricas recopiladas y analizadas"],
+  practica:[
+   {q:"Escribe la ficha de una publicación de tu plan.", ph:"Formato: … Objetivo: … Mensaje principal: … Público: … Fuente: …", crit:"objetivo claro; un solo mensaje principal; formato adecuado al mensaje; público definido; fuente científica o institucional verificable; sin diagnósticos ni recomendaciones individuales"},
+   {q:"Escribe el texto (copy) de una publicación.", ph:"Texto de la publicación, hashtags y llamada a la acción…", crit:"lenguaje claro y empático; exactitud científica; cita la fuente; sin estigmatización; llamada a la acción pertinente; extensión adecuada a la red"}
+  ],
+  recomendaciones:"Mantener rigor científico, usar lenguaje claro y empático, evitar la estigmatización y promover mensajes positivos, preventivos y profesionales."}
+];
+
+const QUIZ = [
+ {s:"t11",q:"En el modelo de Lasswell, ¿qué preguntas describen la comunicación?",o:["Fuente, mensaje, canal y receptor","¿Quién dice qué, por qué canal, a quién y con qué efecto?","Orador, discurso y auditorio","Fuente, transmisor, ruido y destino"],a:1,w:"Lasswell (1948) resume la comunicación en cinco preguntas: quién, qué, canal, a quién y con qué efecto."},
+ {s:"t11",q:"Un estudiante cita «Google» como fuente de un dato. ¿Qué error comete?",o:["Confunde el canal de búsqueda con el emisor o autor","Usa un canal inadecuado","Omite la retroalimentación","Ninguno, es una fuente válida"],a:0,w:"Emisor ≠ transmisor: la fuente es el autor de la información, no el medio donde se encontró."},
+ {s:"t11",q:"El médico se queda con la primera hipótesis y deja de integrar información nueva. Esto se llama:",o:["Ruido","Capta","Cierre prematuro","Retroalimentación"],a:2,w:"El cierre prematuro es un error diagnóstico frecuente del médico como receptor."},
+ {s:"t11",q:"Pedir al paciente que explique con sus palabras lo que entendió es un ejemplo de:",o:["Técnica de devolución (retroalimentación)","Codificación","Barrera cultural","Canal físico"],a:0,w:"La técnica de devolución verifica la comprensión y cierra el proceso con retroalimentación."},
+ {s:"t11",q:"La falta de conectividad o de interoperabilidad entre sistemas es una barrera:",o:["Emocional","Lingüística","Tecnológica","Cultural"],a:2,w:"Conectividad, interoperabilidad y brecha digital son barreras tecnológicas."},
+ {s:"t12",q:"¿Cuál afirmación es correcta?",o:["La web y el Internet son lo mismo","Internet es la infraestructura y la web es un servicio sobre ella","La web nació con ARPANET en 1969","Internet se accede solo con un navegador"],a:1,w:"Internet es la red de redes (TCP/IP); la web es un sistema de documentos enlazados que funciona sobre Internet."},
+ {s:"t12",q:"Google Docs, Gmail y Zoom son ejemplos del modelo de nube:",o:["IaaS","PaaS","SaaS","On-premise"],a:2,w:"En SaaS (software como servicio) se usa la aplicación lista, sin instalar ni administrar servidores."},
+ {s:"t12",q:"¿Cuál es apta para compartir datos clínicos?",o:["WhatsApp personal","Drive personal con «cualquiera con el enlace»","Historia clínica electrónica institucional","La galería del teléfono"],a:2,w:"Solo las plataformas institucionales autorizadas son aptas; los datos de salud son sensibles según la LOPDP (2021)."},
+ {s:"t12",q:"La Web 2.0 se caracteriza por:",o:["Páginas estáticas solo para leer","Leer y escribir: el usuario crea y comparte","Web semántica con IA","Correo electrónico"],a:1,w:"La Web 2.0 es la web social y colaborativa: blogs, wikis, redes y documentos compartidos."},
+ {s:"t13",q:"Una estudiante recomienda por Instagram un antibiótico a un seguidor. Según el semáforo ético es:",o:["Verde","Amarillo","Rojo","No aplica"],a:2,w:"Diagnosticar o prescribir en público está en «Nunca»; vulnera la no maleficencia y el profesionalismo."},
+ {s:"t13",q:"Una foto sin rostro pero con el nombre del paciente en el monitor:",o:["Es aceptable porque no se ve la cara","Vulnera la confidencialidad: el paciente es identificable","Solo requiere un filtro","Es válida si es en historias de 24 h"],a:1,w:"Nombre, cama, pulsera o tatuajes permiten identificar al paciente; se vulnera el secreto profesional."},
+ {s:"t13",q:"Una «alucinación» de la IA es:",o:["Un error de conexión","Una respuesta falsa dicha con total seguridad","Una imagen generada","Un sesgo del usuario"],a:1,w:"El modelo predice palabras probables y puede inventar referencias, dosis o datos; siempre hay que verificar."},
+ {s:"t13",q:"¿Qué identificador único y gratuito sirve para investigadores?",o:["ORCID","DOI","ISBN","URL"],a:0,w:"ORCID identifica de forma única a cada investigador y es parte de su identidad digital profesional."},
+ {s:"u2",q:"En una búsqueda, el operador OR se usa para:",o:["Excluir términos","Unir conceptos distintos y reducir resultados","Sumar sinónimos y ampliar resultados","Filtrar por año"],a:2,w:"OR agrupa sinónimos (amplía); AND une conceptos (reduce); NOT excluye."},
+ {s:"u2",q:"En la pregunta PICO, la «C» corresponde a:",o:["Criterio","Comparación","Contexto","Conclusión"],a:1,w:"PICO: Población, Intervención, Comparación y Resultado (Outcome)."},
+ {s:"u2",q:"MeSH y DeCS son:",o:["Bases de datos","Gestores bibliográficos","Vocabularios controlados de descriptores","Normas de citación"],a:2,w:"MeSH (PubMed) y DeCS (BVS) son descriptores que hacen la búsqueda más precisa."},
+ {s:"u2",q:"En el estilo Vancouver, las referencias se ordenan:",o:["Alfabéticamente por autor","Por año de publicación","En el orden de aparición de las citas en el texto","Por tipo de documento"],a:2,w:"Vancouver numera las citas por orden de aparición y la lista sigue ese mismo orden."},
+ {s:"u2",q:"El diagrama PRISMA simplificado muestra:",o:["Los registros identificados, revisados, excluidos e incluidos","El formato del documento","Los descriptores usados","Las citas en el texto"],a:0,w:"PRISMA documenta el flujo de selección de los estudios."},
+ {s:"u3",q:"Para que la columna Sexo solo acepte «M» o «F» se usa:",o:["Formato condicional","Validación de datos con lista","Tabla dinámica","Filtro"],a:1,w:"La validación de datos restringe las entradas a una lista de opciones o a un rango."},
+ {s:"u3",q:"La frecuencia relativa es:",o:["El número de casos por categoría","La proporción de casos de una categoría sobre el total","La suma de todas las frecuencias","El valor más alto"],a:1,w:"Relativa = frecuencia absoluta ÷ total; puede expresarse en porcentaje."},
+ {s:"u3",q:"Para mostrar la distribución del peso neonatal agrupado en intervalos conviene:",o:["Gráfico circular","Histograma","Gráfico de líneas","Diagrama de dispersión"],a:1,w:"Una variable numérica agrupada en intervalos se representa con un histograma."},
+ {s:"u3",q:"¿Qué herramienta resume rápidamente el número de pacientes por diagnóstico?",o:["Tabla dinámica","Corrector ortográfico","Validación de datos","Combinar celdas"],a:0,w:"La tabla dinámica agrupa y cuenta registros arrastrando campos a filas y valores."},
+ {s:"u4",q:"Cada publicación de la campaña (PAE 6) debe definir:",o:["Solo el formato","Objetivo, mensaje, formato, público y fuente de respaldo","Solo los hashtags","El número de seguidores"],a:1,w:"La guía pide planificar cada contenido con objetivo, mensaje principal, formato, público y fuente."},
+ {s:"u4",q:"Al usar IA para crear contenidos de salud, el equipo debe:",o:["Publicar sin revisar","Revisar, contrastar con fuentes científicas y dejar evidencia de su uso","Ocultar que usó IA","Usar solo imágenes generadas"],a:1,w:"La IA es un apoyo; el contenido se valida con fuentes y se documenta su uso."},
+ {s:"p1",q:"En la PAE 1, el recurso educativo se genera con:",o:["Canva","Gemini Storybook","PowerPoint","Mendeley"],a:1,w:"La guía indica elaborar el prompt y generar la historia ilustrada con Gemini Storybook."},
+ {s:"p2",q:"¿Cuántos artículos pide seleccionar como mínimo la PAE 2?",o:["10","20","25","50"],a:2,w:"La PAE 2 pide un mínimo de 25 artículos pertinentes de los últimos 5 años."},
+ {s:"p4",q:"¿Cuántos registros ficticios debe tener la ficha de pacientes de la PAE 4?",o:["50","100","250","1000"],a:2,w:"La Hoja 1 debe tener un mínimo de 250 registros ficticios."}
+];
+
+const FICHAS = [
+ ["Lasswell","Modelo de comunicación (1948)","¿Quién dice qué, por qué canal, a quién y con qué efecto?"],
+ ["Ruido","Proceso de comunicación","Todo lo que distorsiona el mensaje entre emisor y receptor."],
+ ["Retroalimentación","Proceso de comunicación","Respuesta del receptor que permite al emisor verificar la comprensión."],
+ ["Cierre prematuro","Error del receptor","Quedarse con la primera hipótesis diagnóstica sin integrar información nueva."],
+ ["Internet","Infraestructura","Red mundial de redes con protocolos TCP/IP; origen ARPANET (1969)."],
+ ["Web","Servicio sobre Internet","Documentos enlazados por hipertexto, creados por Tim Berners-Lee en el CERN."],
+ ["SaaS · PaaS · IaaS","Modelos de nube","Software, plataforma o infraestructura como servicio."],
+ ["LOPDP","Ecuador, 2021","Ley Orgánica de Protección de Datos Personales: los datos de salud son sensibles."],
+ ["Semáforo ético","Redes sociales","Adelante, precaución o nunca: guía para decidir qué publicar."],
+ ["ORCID","Identidad digital","Identificador único y gratuito para investigadores."],
+ ["Alucinación","Inteligencia artificial","Respuesta falsa dicha con seguridad; se verifica en fuentes primarias."],
+ ["PICO","Pregunta de investigación","Población, Intervención, Comparación y Resultado."],
+ ["MeSH / DeCS","Descriptores","Vocabularios controlados de PubMed y de la BVS."],
+ ["AND · OR · NOT","Operadores booleanos","Unir conceptos, sumar sinónimos y excluir términos."],
+ ["PRISMA","Selección de estudios","Diagrama de registros identificados, revisados, excluidos e incluidos."],
+ ["Vancouver","Estilo de citación","Citas numeradas y referencias en orden de aparición."],
+ ["Validación de datos","Excel","Restringe las entradas a listas o rangos permitidos."],
+ ["Tabla dinámica","Excel","Resume una base de datos con conteos, sumas o promedios por categoría."],
+ ["Frecuencia relativa","Estadística descriptiva","Proporción de una categoría sobre el total."],
+ ["Histograma","Gráfico","Distribución de una variable numérica agrupada en intervalos."]
+];
+
+/* ============ CONTEXTO PARA LA IA ============ */
+function weekText(w){
+  let t = `## ${w.n}: ${w.t}\n${w.lead}\nConceptos:\n` + w.conceptos.map(c=>`- ${c[0]}: ${c[1]}`).join("\n");
+  [w.cadena,w.cadena2].filter(Boolean).forEach(c=>{ t += `\n${c.titulo}: ${c.nodos.join(" → ")}`; });
+  if(w.niveles) t += "\nNiveles de prevención: " + w.niveles.map(n=>`${n[0]} (${n[1]}): ${n[2]}`).join(" | ");
+  if(w.piramide) t += "\nNiveles de atención: primer nivel (≈80% de la demanda; puerta de entrada, prevención, promoción, consulta general), segundo nivel (≈15%; pediatría, gineco-obstetricia, cirugía general, imagenología, laboratorio avanzado), tercer nivel (≈5%; alta complejidad, subespecialidades, trasplantes, oncología, investigación, hospitales docentes).";
+  [w.tabla,w.tabla2].filter(Boolean).forEach(tb=>{ t += `\n${tb.titulo}: ` + tb.filas.map(f=>f.join(" / ")).join(" | "); });
+  t += `\nCaso de clase: ${w.caso}\nPreguntas de reflexión: ${w.preguntas.join(" ")}\nSíntesis: ${w.sintesis.join(" ")}\nActividad: ${w.actividad}`;
+  return t;
+}
+function paeText(p){
+  return `## ${p.n}: ${p.t}\n${p.unidad} · ${p.horas}\nObjetivo: ${p.objetivo}\nActividades: ${p.pasos.map((s,i)=>`${i+1}) ${s}`).join(" ")}\nResultado esperado: ${p.resultado}\nHabilidad blanda: ${p.habilidad}\nLista de entrega: ${p.checklist.join("; ")}\nRecomendaciones: ${p.recomendaciones}`;
+}
+function courseContext(focus){
+  let head = `# Asignatura: Tecnología de la Información y Comunicación (TIC) — Medicina, 1.er nivel, Universidad Técnica de Ambato (Ecuador), ciclo julio–diciembre 2026\nObjetivo general: ${PROGRAMA.objetivo}\nResultados de aprendizaje: ${PROGRAMA.ras.map(r=>`${r.n} ${r.t}: ${r.d}`).join(" ")}\nBibliografía básica: Campos E, et al. Competencias digitales básicas para el médico general. Panamericana; 2021.\n`;
+  const w = SEMANAS.find(x=>x.id===focus), p = PAES.find(x=>x.id===focus);
+  if(w) return head + "\n" + weekText(w) + "\n\n(Otros temas del curso: " + SEMANAS.filter(x=>x!==w).map(x=>x.n+" "+x.t).concat(PAES.map(x=>x.n+" "+x.t)).join("; ") + ")";
+  if(p) return head + "\n" + paeText(p) + "\n\nContenidos relacionados:\n" + SEMANAS.map(weekText).join("\n\n");
+  return head + "\n" + SEMANAS.map(weekText).join("\n\n") + "\n\n" + PAES.map(paeText).join("\n\n");
+}
+const MODE_RULES = {
+  explicar:"MODO EXPLICAR: explica con claridad, define términos y da 1 o 2 ejemplos aplicados a la práctica médica o a los talleres. Si el tema es Excel, muestra la fórmula o los pasos concretos. Cierra con una pregunta breve para que el estudiante verifique su comprensión.",
+  guiar:"MODO GUÍA SOCRÁTICA: no des la respuesta completa. Haz una o dos preguntas por turno que lleven al estudiante a razonar o a probar en la herramienta, da pistas conectadas a los contenidos del curso y valida lo que responde antes de avanzar.",
+  evaluar:"MODO EVALUACIÓN: formula UNA pregunta a la vez sobre el tema de enfoque (alterna opción múltiple, ejercicio práctico breve y análisis de caso). Cuando el estudiante responda, corrige con retroalimentación concreta y luego propone la siguiente pregunta."
+};
+function rulesTurn(mode, focus){
+  return `Eres el Tutor de TIC para Medicina, asistente de estudio para estudiantes de 1.er nivel de Medicina de la Universidad Técnica de Ambato (Ecuador), asignatura Tecnología de la Información y Comunicación.
+Reglas:
+1. Responde siempre en español, con tono cercano y académico.
+2. Basa tus respuestas en el CONTENIDO DEL CURSO de abajo. Si agregas conocimiento general, indícalo ("fuera de los contenidos de clase…").
+3. No inventes datos, referencias, DOI ni citas. Recuerda al estudiante verificar en fuentes primarias (PubMed, BVS, guías de práctica clínica, documentación oficial de la herramienta).
+4. Integridad académica: no redactes informes, ensayos, documentos ni campañas completas para entregar. Ayuda a comprender, a organizar ideas, explica cómo hacer cada paso en la herramienta y da retroalimentación sobre lo que el estudiante escribe.
+5. Para Excel, usa los nombres de funciones en español (SUMA, PROMEDIO, CONTAR.SI, SI) y el punto y coma como separador de argumentos. Si hablan del IVA de la factura (PAE 4), indica que la guía menciona 12 % y que verifiquen con el docente la tarifa vigente en Ecuador.
+6. Protección de datos: recuerda que los datos de salud son sensibles (LOPDP, Ecuador 2021). Si el estudiante pega datos reales de pacientes, pídele que los elimine y trabaje con datos ficticios.
+7. No das consejo médico personal.
+8. Formato: respuestas breves (máximo unas 250 palabras salvo que pidan más), párrafos cortos, listas con "-" y **negritas** con moderación.
+${MODE_RULES[mode]}
+
+CONTENIDO DEL CURSO (tema de enfoque: ${focusLabel(focus)}):
+${courseContext(focus)}`;
+}
+
+/* ============ UTILIDADES ============ */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function inline(s){ return s.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g,"$1<i>$2</i>").replace(/`([^`]+)`/g,"<code>$1</code>"); }
+function md(src){
+  const lines = esc(src).split(/\n/); let out="", list=null, para=[];
+  const flushP=()=>{ if(para.length){ out+="<p>"+inline(para.join(" "))+"</p>"; para=[]; } };
+  const closeL=()=>{ if(list){ out+=`</${list}>`; list=null; } };
+  for(const raw of lines){
+    const l = raw.trim();
+    let m;
+    if(!l){ flushP(); closeL(); continue; }
+    if((m=l.match(/^#{1,6}\s+(.*)/))){ flushP(); closeL(); out+="<h4>"+inline(m[1])+"</h4>"; continue; }
+    if((m=l.match(/^[-*•]\s+(.*)/))){ flushP(); if(list!=="ul"){ closeL(); out+="<ul>"; list="ul"; } out+="<li>"+inline(m[1])+"</li>"; continue; }
+    if((m=l.match(/^\d+[.)]\s+(.*)/))){ flushP(); if(list!=="ol"){ closeL(); out+="<ol>"; list="ol"; } out+="<li>"+inline(m[1])+"</li>"; continue; }
+    closeL(); para.push(l);
+  }
+  flushP(); closeL(); return out;
+}
+const ERR = {
+  not_granted:"No se autorizó el uso del tutor IA en esta vista. Puedes seguir usando los contenidos, las guías y la autoevaluación.",
+  sampling_disabled:"El tutor IA no está disponible para esta cuenta.",
+  bad_key:"La clave de Gemini no es válida o no tiene permisos. Revísala en aistudio.google.com/apikey y vuelve a guardarla.",
+  model_not_found:"El modelo de Gemini no está disponible para tu clave. Intenta más tarde.",
+  invalid_request:"La solicitud no fue aceptada. Inicia una nueva conversación e inténtalo de nuevo.",
+  rate_limited:"Se alcanzó el límite gratuito de consultas por ahora. Espera un minuto e inténtalo de nuevo.",
+  session_expired:"Tu sesión expiró. Vuelve a iniciar sesión y recarga la página.",
+  refused:"El tutor no puede responder esa consulta. Reformúlala con un enfoque académico.",
+  prompt_too_large:"La conversación es muy larga. Inicia una nueva conversación.",
+  empty_completion:"No llegó respuesta. Intenta con una pregunta más concreta.",
+  invalid_json:"No se pudieron generar las preguntas. Inténtalo de nuevo.",
+  upstream_error:"Hubo un problema de conexión. Revisa tu internet e inténtalo de nuevo."
+};
+const errCopy = e => ERR[e && e.code] || ERR.upstream_error;
+const HARD = ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed","bad_key"];
+async function copyText(txt, btn){
+  try{ await navigator.clipboard.writeText(txt); if(btn){ const o=btn.textContent; btn.textContent="Copiado"; setTimeout(()=>btn.textContent=o,1600);} }
+  catch(_){ const ta=document.createElement("textarea"); ta.value=txt; ta.style.cssText="width:100%;min-height:120px;margin-top:8px"; ta.readOnly=true; (btn?btn.parentElement:document.body).after(ta); ta.select(); }
+}
+
+/* ============ PROVEEDOR IA: Claude (dentro de claude.ai) o Gemini (clave del estudiante) ============ */
+const LS_KEY="rn_gemini_key", LS_MODEL="rn_gemini_model";
+const MODELS=["gemini-flash-latest","gemini-2.5-flash","gemini-2.0-flash"];
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }
+function lsSet(k,v){ try{ v==null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(_){} }
+function toGemini(input){
+  let list = typeof input==="string" ? [{role:"user",content:input}] : input.slice();
+  let system=null;
+  if(list.length>1){ system=list[0].content; list=list.slice(1); }
+  const contents=[];
+  for(const t of list){
+    const role = t.role==="assistant" ? "model" : "user", last = contents[contents.length-1];
+    if(last && last.role===role) last.parts[0].text += "\n\n"+t.content; else contents.push({role, parts:[{text:t.content}]});
+  }
+  return {system, contents};
+}
+function geminiErr(status, body){
+  const msg = (body && body.error && body.error.message) || "";
+  if(status===401 || status===403 || (status===400 && /api[ _]?key/i.test(msg))) return {code:"bad_key", message:msg};
+  if(status===429) return {code:"rate_limited", message:msg};
+  if(status===404) return {code:"model_not_found", message:msg};
+  if(status===400) return {code:"invalid_request", message:msg};
+  return {code:"upstream_error", message:msg};
+}
+async function geminiCall(key, input, opts, asJson){
+  opts = opts || {};
+  const {system, contents} = toGemini(input);
+  const body = {contents, generationConfig:{temperature:0.7, maxOutputTokens:8192}};
+  if(asJson) body.generationConfig.responseMimeType = "application/json";
+  if(system) body.systemInstruction = {parts:[{text:system}]};
+  const models = [lsGet(LS_MODEL)||MODELS[0]].concat(MODELS).filter((v,i,a)=>a.indexOf(v)===i);
+  let lastErr = null;
+  for(const model of models){
+    let res;
+    try{
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {
+        method:"POST", headers:{"Content-Type":"application/json","x-goog-api-key":key}, body:JSON.stringify(body), signal:opts.signal });
+    }catch(e){ if(opts.signal && opts.signal.aborted) throw {code:"cancelled"}; throw {code:"upstream_error", message:String(e)}; }
+    if(!res.ok){
+      let b=null; try{ b=await res.json(); }catch(_){}
+      lastErr = geminiErr(res.status, b);
+      if(lastErr.code==="model_not_found") continue;
+      throw lastErr;
+    }
+    lsSet(LS_MODEL, model);
+    const reader = res.body.getReader(), dec = new TextDecoder();
+    let buf="", text="", finish="", blocked=false;
+    try{
+      for(;;){
+        const {value, done} = await reader.read(); if(done) break;
+        buf += dec.decode(value, {stream:true});
+        let i;
+        while((i = buf.indexOf("\n")) >= 0){
+          const line = buf.slice(0,i).trim(); buf = buf.slice(i+1);
+          if(!line.startsWith("data:")) continue;
+          let d; try{ d = JSON.parse(line.slice(5)); }catch(_){ continue; }
+          if(d.promptFeedback && d.promptFeedback.blockReason) blocked = true;
+          const c = d.candidates && d.candidates[0]; if(!c) continue;
+          const delta = ((c.content && c.content.parts) || []).filter(p=>!p.thought).map(p=>p.text||"").join("");
+          if(delta){ text += delta; if(opts.onText && !asJson) opts.onText({text, delta}); }
+          if(c.finishReason) finish = c.finishReason;
+        }
+      }
+    }catch(e){ if(opts.signal && opts.signal.aborted) throw {code:"cancelled", text}; throw {code:"upstream_error", text}; }
+    if(blocked || (!text.trim() && /SAFETY|PROHIBITED|BLOCKLIST|RECITATION/.test(finish))) throw {code:"refused"};
+    if(!text.trim()) throw {code:"empty_completion"};
+    return {text, truncated: finish==="MAX_TOKENS"};
+  }
+  throw lastErr || {code:"upstream_error"};
+}
+function parseJsonLoose(t){
+  try{ return JSON.parse(t); }catch(_){}
+  const f = t.match(/```(?:json)?\s*([\s\S]*?)```/); if(f){ try{ return JSON.parse(f[1]); }catch(_){} }
+  const a = t.search(/[\[{]/), b = Math.max(t.lastIndexOf("]"), t.lastIndexOf("}"));
+  if(a>=0 && b>a){ try{ return JSON.parse(t.slice(a,b+1)); }catch(_){} }
+  throw {code:"invalid_json", text:t};
+}
+function makeGemini(key){
+  const fn = (input, opts)=>geminiCall(key, input, opts, false);
+  fn.json = async (input, opts)=>parseJsonLoose((await geminiCall(key, input, opts, true)).text);
+  fn.provider = "Gemini";
+  return fn;
+}
+function wrapClaude(cs){
+  const fn = (input, opts)=>cs(input, opts);
+  fn.json = (input, opts)=>cs.json(input, opts);
+  fn.provider = "Claude";
+  return fn;
+}
+
+/* ============ ESTADO IA ============ */
+let sample = null, aiDead = false;
+function setAI(state){
+  const pill=$("#aiPill"), t=$("#aiPillTxt");
+  pill.classList.toggle("on", state==="on");
+  t.textContent = state==="on" ? `Tutor IA activo (${sample.provider})` : state==="wait" ? "Conectando tutor IA…" : "Tutor IA sin conectar · agrega tu clave";
+  document.querySelectorAll("[data-ai]").forEach(el=>el.hidden = state!=="on");
+  document.querySelectorAll("[data-noai]").forEach(el=>el.hidden = state==="on");
+  $("#genQuiz").hidden = state!=="on";
+  const kb=$("#keyBox"); if(kb) kb.hidden = !!(sample && sample.provider==="Claude");
+}
+function killAI(){ aiDead=true; sample=null; setAI("off"); }
+function enableAI(s){ sample=s; aiDead=false; setAI("on"); }
+$("#aiPill").onclick = ()=>{ show("tutor"); if(!sample){ const k=$("#apiKey"); k.scrollIntoView({block:"center"}); k.focus(); } };
+$("#saveKey").onclick = async ()=>{
+  const k=$("#apiKey").value.trim(), st=$("#keyState"), b=$("#saveKey");
+  if(k.length<20){ st.textContent="Pega la clave completa (empieza normalmente con «AIza»)."; return; }
+  b.disabled=true; st.textContent="Probando la clave…";
+  const g = makeGemini(k);
+  try{
+    await g("Responde únicamente con la palabra: listo");
+    lsSet(LS_KEY, k); $("#apiKey").value=""; enableAI(g);
+    st.textContent="Clave guardada en este navegador. El tutor IA está activo.";
+  }catch(e){ st.textContent = errCopy(e); }
+  finally{ b.disabled=false; }
+};
+$("#delKey").onclick = ()=>{ lsSet(LS_KEY,null); lsSet(LS_MODEL,null); $("#apiKey").value=""; if(sample && sample.provider==="Gemini") killAI(); $("#keyState").textContent="Clave borrada de este navegador."; };
+
+/* ============ NAVEGACIÓN ============ */
+const VIEWS=["tutor","semanas","pae","quiz","fichas"];
+function show(v){
+  if(!VIEWS.includes(v)) v="tutor";
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.view===v));
+  VIEWS.forEach(x=>$("#view-"+x).hidden = x!==v);
+  try{ history.replaceState(null,"","#"+v); }catch(_){}
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>{ show(b.dataset.view); window.scrollTo({top:0}); });
+
+/* ============ TUTOR ============ */
+let mode="explicar", focus="all", turns=[], ctl=null, busy=false;
+const FOCI=[["all","Todo el curso"]].concat(SEMANAS.map(w=>[w.id,`${w.n} · ${w.t}`]), PAES.map(p=>[p.id,`${p.n} · ${p.t}`]));
+function focusLabel(f){ return (FOCI.find(x=>x[0]===f)||FOCI[0])[1]; }
+$("#focus").innerHTML = FOCI.map(f=>`<option value="${f[0]}">${esc(f[1])}</option>`).join("");
+$("#focus").onchange = e=>{ focus=e.target.value; renderStarters(); };
+document.querySelectorAll("#modes button").forEach(b=>b.onclick=()=>{
+  mode=b.dataset.mode; document.querySelectorAll("#modes button").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderStarters();
+});
+const STARTERS = {
+  all:["¿Cuáles son las 6 competencias digitales del profesional sanitario?","Explícame el modelo de Lasswell con un caso clínico","¿Cómo armo una pregunta PICO?","¿Qué es una tabla dinámica y para qué sirve?"],
+  t11:["Explícame los elementos del proceso de comunicación","Analiza el caso de los pacientes sordomudos con Lasswell","¿Qué es el cierre prematuro?"],
+  t12:["¿Qué diferencia hay entre Internet y la web?","¿Cómo evalúo si una página de salud es confiable?","Explícame SaaS, PaaS e IaaS con ejemplos"],
+  t13:["¿Cómo aplico el semáforo ético a una publicación?","¿Qué es una alucinación de la IA y cómo me protejo?","¿Cómo creo mi identidad digital profesional?"],
+  u2:["¿Cómo uso los operadores booleanos en PubMed?","¿Qué diferencia hay entre MeSH y DeCS?","¿Cómo inserto citas Vancouver con Mendeley en Word?"],
+  u3:["¿Cómo configuro la validación de datos en Excel?","Explícame frecuencia absoluta y relativa","¿Cómo creo intervalos de clase para el peso neonatal?"],
+  u4:["¿Qué principios de diseño aplico a una infografía?","¿Cómo planifico una campaña de salud en redes?","¿Cómo uso la IA de forma responsable en mis contenidos?"],
+  p1:["¿Cómo me preparo para la PAE 1?","Ayúdame a mejorar mi prompt para Gemini Storybook","¿Qué reviso en el contenido generado por la IA?"],
+  p2:["¿Cómo me preparo para la PAE 2?","Guíame para construir mi estrategia de búsqueda","¿Cómo hago el diagrama PRISMA simplificado?"],
+  p3:["¿Cómo me preparo para la PAE 3?","¿Cómo creo un índice automático en Word?","¿Cómo numero tablas e imágenes automáticamente?"],
+  p4:["¿Cómo me preparo para la PAE 4?","¿Qué fórmulas uso en la factura médica?","¿Cómo creo la tabla dinámica del promedio de edad por área?"],
+  p5:["¿Cómo me preparo para la PAE 5?","¿Cómo comparo el Apgar entre dos grupos de edad materna?","¿Cómo hago la tabla de frecuencias del peso en intervalos?"],
+  p6:["¿Cómo me preparo para la PAE 6?","Ayúdame a definir la identidad visual de la campaña","¿Qué métricas debo analizar?"]
+};
+function renderStarters(){
+  let list = STARTERS[focus] || STARTERS.all;
+  if(mode==="evaluar") list = [`Evalúame sobre ${focusLabel(focus)}`, "Hazme una pregunta de análisis de caso", "Hazme 3 preguntas rápidas"];
+  $("#starters").innerHTML = list.map(s=>`<button type="button" class="chip">${esc(s)}</button>`).join("");
+  $("#starters").querySelectorAll(".chip").forEach(c=>c.onclick=()=>ask(c.textContent));
+}
+function addMsg(role, html, cls=""){
+  const d=document.createElement("div"); d.className=`msg ${role} ${cls}`;
+  if(role==="bot"){ d.innerHTML=`<div class="who">Tutor</div><div class="md">${html}</div>`; }
+  else if(role==="user"){ d.textContent=html; }
+  else d.innerHTML=html;
+  $("#msgs").append(d); $("#msgs").scrollTop=$("#msgs").scrollHeight; return d;
+}
+function welcome(){
+  $("#msgs").innerHTML="";
+  addMsg("bot", md("Hola. Soy tu tutor de **Tecnología de la Información y Comunicación**. Puedo explicarte los contenidos de las cuatro unidades, ayudarte a preparar los talleres **PAE 1 a 6** y evaluarte con preguntas.\n\nElige a la derecha cómo quieres estudiar y el tema de enfoque, o escribe tu pregunta. Por ejemplo: *¿Cómo combino AND y OR en una búsqueda de PubMed?*"));
+}
+function fallbackNote(question){
+  const d = addMsg("note", `<div class="fallback"><b>El tutor IA aún no está conectado.</b> Pega tu clave gratuita de Gemini en el panel «Conectar la IA». También puedes copiar tu consulta con el contexto del curso y pegarla en otra herramienta de IA.<div class="row" style="margin-top:8px"><button class="btn small" type="button">Copiar consulta con contexto</button></div></div>`);
+  const b=d.querySelector("button"); b.onclick=()=>copyText(rulesTurn(mode,focus)+"\n\nPREGUNTA DEL ESTUDIANTE:\n"+question, b);
+}
+async function ask(text){
+  text=(text||"").trim(); if(!text||busy) return;
+  show("tutor");
+  $("#q").value=""; autosize();
+  addMsg("user", text);
+  if(!sample){ fallbackNote(text); return; }
+  turns.push({role:"user",content:text});
+  const bubble = addMsg("bot", `<span class="thinking">Pensando…</span>`);
+  const body = bubble.querySelector(".md");
+  busy=true; $("#sendBtn").disabled=true; $("#stopBtn").hidden=false;
+  ctl = new AbortController();
+  const recent = turns.slice(-12); while(recent.length && recent[0].role!=="user") recent.shift();
+  try{
+    const {text:ans, truncated} = await sample([{role:"user",content:rulesTurn(mode,focus)}, ...recent], {
+      cache:false, signal:ctl.signal, onText:({text})=>{ body.innerHTML=md(text); $("#msgs").scrollTop=$("#msgs").scrollHeight; }
+    });
+    body.innerHTML = md(ans) + (truncated?`<p class="hint">La respuesta se cortó. Pide que continúe.</p>`:"");
+    turns.push({role:"assistant",content:ans});
+  }catch(e){
+    if(e && e.text && e.code!=="refused"){ body.innerHTML=md(e.text); turns.push({role:"assistant",content:e.text}); }
+    else if(e && e.code==="cancelled"){ body.innerHTML=`<span class="thinking">Respuesta detenida.</span>`; }
+    else body.innerHTML="";
+    if(e && e.code!=="cancelled"){ addMsg("note", esc(errCopy(e))); }
+    if(e && HARD.includes(e.code)) killAI();
+  }finally{
+    busy=false; $("#sendBtn").disabled=false; $("#stopBtn").hidden=true; ctl=null;
+  }
+}
+$("#composer").onsubmit = e=>{ e.preventDefault(); ask($("#q").value); };
+$("#q").addEventListener("keydown", e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); ask($("#q").value); } });
+function autosize(){ const t=$("#q"); t.style.height="auto"; t.style.height=Math.min(t.scrollHeight,160)+"px"; }
+$("#q").addEventListener("input", autosize);
+$("#stopBtn").onclick = ()=>ctl && ctl.abort();
+$("#clearBtn").onclick = ()=>{ if(ctl) ctl.abort(); turns=[]; welcome(); };
+function askAbout(text, f){ if(f){ focus=f; $("#focus").value=f; renderStarters(); } ask(text); }
+
+/* ============ SEMANAS ============ */
+$("#ras").innerHTML = PROGRAMA.ras.map(r=>`<div class="ra"><span class="mono">${r.n}</span><h3>${esc(r.t)}</h3><p>${esc(r.d)}</p></div>`).join("");
+let curWeek="t11";
+function chainHTML(c){ return `<div class="sec"><h3>${esc(c.titulo)}</h3><div class="chain">${c.nodos.map((n,i)=>(i?'<span class="arr" aria-hidden="true">→</span>':'')+`<span class="node">${esc(n)}</span>`).join("")}</div></div>`; }
+function tableHTML(t){ return `<div class="sec"><h3>${esc(t.titulo)}</h3><div class="tablebox"><table><thead><tr>${t.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${t.filas.map(f=>`<tr>${f.map((c,i)=>i?`<td>${esc(c)}</td>`:`<td><b>${esc(c)}</b></td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`; }
+function renderWeekTabs(){
+  $("#weekTabs").innerHTML = SEMANAS.map(w=>`<button role="tab" type="button" data-id="${w.id}" aria-selected="${w.id===curWeek}"><span class="mono">${w.n}</span>${esc(w.t)}</button>`).join("");
+  $("#weekTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{ curWeek=b.dataset.id; renderWeekTabs(); renderWeek(); });
+}
+function renderWeek(){
+  const w = SEMANAS.find(x=>x.id===curWeek);
+  let h = `<div class="sheet-head"><div><span class="eyebrow">${w.n}</span><h2>${esc(w.t)}</h2><p class="lead">${esc(w.lead)}</p></div>
+    <button class="btn primary" type="button" data-ai hidden id="wkAsk">Estudiar este tema con el tutor</button></div>`;
+  h += `<div class="sec"><h3>Conceptos clave</h3><div class="concepts">${w.conceptos.map((c,i)=>`<div class="concept"><b>${esc(c[0])}</b><p>${esc(c[1])}</p><div data-ai hidden><button class="link" type="button" data-c="${i}">Pregúntale al tutor</button></div></div>`).join("")}</div></div>`;
+  if(w.piramide){
+    h += `<div class="sec two"><div><h3>Niveles de atención</h3><div class="pyramid" role="img" aria-label="Pirámide: tercer nivel 5 por ciento, segundo nivel 15 por ciento, primer nivel 80 por ciento de la demanda">
+      <div style="width:40%">Tercer nivel<small>≈ 5 % · alta complejidad</small></div>
+      <div style="width:68%">Segundo nivel<small>≈ 15 % · especialidades básicas</small></div>
+      <div style="width:100%">Primer nivel<small>≈ 80 % · puerta de entrada, prevención y promoción</small></div></div></div>
+      <div class="card"><h4>Movilidad del paciente</h4><p><b>Referencia:</b> flujo ascendente hacia mayor complejidad.<br><b>Contrarreferencia:</b> flujo descendente para continuar el tratamiento o la rehabilitación.</p></div></div>`;
+  }
+  if(w.niveles){ h += `<div class="sec"><h3>Niveles de prevención</h3><div class="two" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">${w.niveles.map(n=>`<div class="card"><h4>${n[0]} <span class="mono" style="color:var(--muted)">· ${n[1]}</span></h4><p>${esc(n[2])}</p></div>`).join("")}</div></div>`; }
+  [w.cadena,w.cadena2].filter(Boolean).forEach(c=>h+=chainHTML(c));
+  [w.tabla,w.tabla2].filter(Boolean).forEach(t=>h+=tableHTML(t));
+  h += `<div class="sec two"><div class="card"><h4>Caso de análisis</h4><p>${esc(w.caso)}</p><div data-ai hidden style="margin-top:8px"><button class="link" type="button" id="wkCase">Analizar el caso con el tutor (modo guía)</button></div></div>
+        <div class="card"><h4>Actividad y trabajo autónomo</h4><p>${esc(w.actividad)}</p></div></div>`;
+  h += `<div class="sec"><h3>Preguntas de reflexión</h3><ul class="qlist">${w.preguntas.map((q,i)=>`<li><span>${esc(q)}</span><button class="btn small" type="button" data-ai hidden data-q="${i}">Discutir</button></li>`).join("")}</ul></div>`;
+  h += `<div class="sec"><h3>Síntesis</h3><ul class="qlist">${w.sintesis.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ul></div>`;
+  $("#weekSheet").innerHTML = h;
+  const s=$("#weekSheet");
+  s.querySelector("#wkAsk").onclick=()=>askAbout(`Hazme un resumen de ${w.n} (${w.t}) con las ideas clave y un ejemplo aplicado a la medicina.`, w.id);
+  s.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ const c=w.conceptos[+b.dataset.c]; askAbout(`Explícame "${c[0]}" con un ejemplo concreto aplicado a la práctica médica o a los talleres.`, w.id); });
+  s.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>askAbout(`Quiero discutir esta pregunta de reflexión: "${w.preguntas[+b.dataset.q]}". Ayúdame a construir mi postura.`, w.id));
+  s.querySelector("#wkCase").onclick=()=>{ document.querySelector('#modes [data-mode="guiar"]').click(); askAbout(`Guíame para analizar este caso: ${w.caso}`, w.id); };
+  setAI(sample?"on":aiDead?"off":"wait");
+}
+
+/* ============ PAE ============ */
+let curPae="p1";
+const CK_KEY="tic_checklist";
+function ckGet(){ try{ return JSON.parse(localStorage.getItem(CK_KEY)||"{}"); }catch(_){ return {}; } }
+function ckSet(o){ try{ localStorage.setItem(CK_KEY, JSON.stringify(o)); }catch(_){} }
+function renderPaeTabs(){
+  $("#paeTabs").innerHTML = PAES.map(p=>`<button role="tab" type="button" data-id="${p.id}" aria-selected="${p.id===curPae}"><span class="mono">${p.n} · ${p.unidad}</span>${esc(p.t.length>52?p.t.slice(0,50)+"…":p.t)}</button>`).join("");
+  $("#paeTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{ curPae=b.dataset.id; renderPaeTabs(); renderPae(); });
+}
+function renderPae(){
+  const p = PAES.find(x=>x.id===curPae), ck=ckGet(), done=(ck[p.id]||[]);
+  let h = `<div class="sheet-head"><div><span class="pae-badge">${p.n} · Taller</span><h2 style="margin-top:8px">${esc(p.t)}</h2>
+    <div class="meta"><span><b>${esc(p.unidad)}</b></span><span><b>Duración:</b> ${esc(p.horas)}</span><span><b>Habilidad blanda:</b> ${esc(p.habilidad)}</span></div></div>
+    <button class="btn primary" type="button" data-ai hidden id="paePrep">Prepararme para este taller</button></div>`;
+  h += `<div class="sec"><h3>Objetivo</h3><p class="lead" style="margin:0;color:var(--ink)">${esc(p.objetivo)}</p></div>`;
+  h += `<div class="sec"><h3>Actividades</h3><ol class="steps">${p.pasos.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol></div>`;
+  h += `<div class="sec two"><div class="card"><h4>Resultado esperado</h4><p>${esc(p.resultado)}</p></div><div class="card"><h4>Recomendaciones</h4><p>${esc(p.recomendaciones)}</p></div></div>`;
+  h += `<div class="sec"><h3>Lista de verificación antes de entregar</h3><p class="hint" style="margin-bottom:10px">Marca lo que ya tienes listo. Se guarda solo en este navegador.</p><ul class="qlist" id="ckList">${p.checklist.map((c,i)=>`<li><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;flex:1"><input type="checkbox" id="ck-${p.id}-${i}" data-ck="${i}" ${done.includes(i)?"checked":""} style="margin-top:4px;accent-color:var(--accent)"><span>${esc(c)}</span></label></li>`).join("")}</ul><p class="hint" id="ckCount" style="margin-top:8px"></p></div>`;
+  h += `<div class="sec"><h3>Practica con el tutor</h3><p class="hint" style="margin-bottom:10px">Escribe tu avance con tus propias palabras. El tutor te dará retroalimentación según los criterios del taller; no lo hace por ti. No incluyas datos reales de pacientes.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">${p.practica.map((q,i)=>`<div class="practice"><b style="font-size:14.5px">${i+1}. ${esc(q.q)}</b>
+      <label class="hint" for="ans-${p.id}-${i}">Tu avance</label>
+      <textarea id="ans-${p.id}-${i}" placeholder="${esc(q.ph)}"></textarea>
+      <div class="row"><button class="btn small primary" type="button" data-ai hidden data-fb="${i}">Revisar mi avance</button><button class="btn small" type="button" data-ai hidden data-hint="${i}">Dame pistas para empezar</button>
+      <button class="btn small" type="button" data-noai data-copy="${i}">Copiar pregunta y respuesta</button></div>
+      <div class="feedback md" id="fb-${p.id}-${i}" hidden></div></div>`).join("")}</div></div>`;
+  $("#paeSheet").innerHTML = h;
+  const s=$("#paeSheet");
+  const count=()=>{ const n=(ckGet()[p.id]||[]).length; $("#ckCount").textContent=`${n} de ${p.checklist.length} listos`; };
+  s.querySelectorAll("[data-ck]").forEach(c=>c.onchange=()=>{ const o=ckGet(); const arr=new Set(o[p.id]||[]); const i=+c.dataset.ck; c.checked?arr.add(i):arr.delete(i); o[p.id]=[...arr]; ckSet(o); count(); });
+  count();
+  s.querySelector("#paePrep").onclick=()=>{ document.querySelector('#modes [data-mode="guiar"]').click(); askAbout(`Ayúdame a prepararme para el taller ${p.n} (${p.t}). ¿Qué debo dominar y cómo organizo el trabajo?`, p.id); };
+  s.querySelectorAll("[data-hint]").forEach(b=>b.onclick=()=>askAbout(`Dame pistas (sin hacerlo por mí) para empezar esta parte de ${p.n}: "${p.practica[+b.dataset.hint].q}"`, p.id));
+  s.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{ const i=+b.dataset.copy; copyText(`${p.n} — ${p.t}\nPregunta: ${p.practica[i].q}\nMi avance: ${$(`#ans-${p.id}-${i}`).value}`, b); });
+  s.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>feedback(p, +b.dataset.fb, b));
+  setAI(sample?"on":aiDead?"off":"wait");
+}
+async function feedback(p, i, btn){
+  const ans = $(`#ans-${p.id}-${i}`).value.trim(), box=$(`#fb-${p.id}-${i}`), item=p.practica[i];
+  box.hidden=false;
+  if(ans.length<20){ box.innerHTML="<p>Escribe un poco más para recibir retroalimentación útil.</p>"; return; }
+  if(!sample){ box.innerHTML="<p>El tutor IA no está conectado. Agrega tu clave en la pestaña Tutor IA.</p>"; return; }
+  btn.disabled=true; box.innerHTML=`<span class="thinking">Revisando tu avance…</span>`;
+  const prompt = `Eres docente de Tecnología de la Información y Comunicación (Medicina, 1.er nivel, UTA, Ecuador). Da retroalimentación formativa al avance de un estudiante. NO lo reescribas completo ni entregues una versión final para copiar; puedes mostrar como máximo un fragmento corto de ejemplo para ilustrar una corrección.
+Evalúa estos criterios, cada uno con nivel (Inicial / En desarrollo / Logrado) y una frase de justificación: ${item.crit}.
+Luego: "Fortalezas" (1-2 viñetas), "Para mejorar" (2-3 viñetas concretas) y una pregunta que lo haga avanzar. Si el texto contiene datos que parezcan reales de pacientes, pide eliminarlos. En Excel usa funciones en español y punto y coma. Español, máximo 220 palabras.
+
+TALLER: ${p.n} — ${p.t}
+Objetivo del taller: ${p.objetivo}
+Actividades: ${p.pasos.join(" ")}
+CONSIGNA: ${item.q}
+AVANCE DEL ESTUDIANTE:
+"""${ans.slice(0,4000)}"""`;
+  try{
+    const r = await sample(prompt, {onText:({text})=>{ box.innerHTML=md(text); }});
+    box.innerHTML = md(r.text);
+  }catch(e){
+    box.innerHTML = e && e.text && e.code!=="refused" ? md(e.text) : "";
+    box.insertAdjacentHTML("beforeend", `<p class="hint">${esc(errCopy(e))}</p>`);
+    if(e && HARD.includes(e.code)) killAI();
+  }finally{ btn.disabled=false; }
+}
+
+/* ============ QUIZ ============ */
+let qFilter="all", qIdx=0, qScore=0, qDone=0, qList=[], extra=[];
+const QF=[["all","Todos los temas"]].concat(SEMANAS.map(w=>[w.id,w.n+" · "+w.t]), PAES.map(p=>[p.id,p.n]));
+$("#quizFilter").innerHTML = QF.map(f=>`<option value="${f[0]}">${esc(f[1])}</option>`).join("");
+$("#quizFilter").onchange=e=>{ qFilter=e.target.value; startQuiz(); };
+$("#restartQuiz").onclick=()=>startQuiz();
+function srcLabel(s){ const w=SEMANAS.find(x=>x.id===s)||PAES.find(x=>x.id===s); return w? w.n : "Generada con IA"; }
+function startQuiz(){
+  qList = QUIZ.concat(extra).filter(q=>qFilter==="all"||q.s===qFilter);
+  qList = qList.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  qIdx=0; qScore=0; qDone=0; renderQ();
+}
+function renderQ(){
+  $("#score").textContent = `Aciertos ${qScore}/${qDone} · Pregunta ${Math.min(qIdx+1,qList.length)} de ${qList.length}`;
+  if(!qList.length){ $("#quizBox").innerHTML=`<div class="qcard"><p>No hay preguntas para este tema todavía.</p></div>`; return; }
+  if(qIdx>=qList.length){
+    const pct = Math.round(100*qScore/Math.max(qDone,1));
+    $("#quizBox").innerHTML=`<div class="qcard"><span class="eyebrow">Resultado</span><h3>${qScore} de ${qDone} correctas (${pct} %)</h3><p class="lead">${pct>=80?"Muy buen dominio. Prueba el modo Evalúame del tutor con preguntas de análisis.":"Repasa los temas en Contenidos por unidad y vuelve a intentarlo."}</p><div class="row" style="margin-top:14px"><button class="btn primary" type="button" id="again">Intentar de nuevo</button></div></div>`;
+    $("#again").onclick=startQuiz; return;
+  }
+  const q=qList[qIdx];
+  $("#quizBox").innerHTML=`<div class="qcard"><span class="mono qsrc">${esc(srcLabel(q.s))}</span><h3>${esc(q.q)}</h3>
+    <div class="opts">${q.o.map((o,i)=>`<button class="opt" type="button" data-i="${i}"><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`).join("")}</div><div id="why"></div></div>`;
+  $("#quizBox").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i, ok=i===q.a; qDone++; if(ok) qScore++;
+    $("#quizBox").querySelectorAll(".opt").forEach((x,j)=>{ x.disabled=true; if(j===q.a) x.classList.add("right"); else if(j===i) x.classList.add("wrong"); });
+    $("#why").innerHTML=`<div class="why"><b class="${ok?"okc":"badc"}">${ok?"Correcto.":"No es correcto."}</b> ${esc(q.w)}<div class="row" style="margin-top:10px"><button class="btn small primary" type="button" id="nextQ">Siguiente</button>${sample?`<button class="btn small" type="button" id="whyAI">Explícame más</button>`:""}</div></div>`;
+    $("#nextQ").onclick=()=>{ qIdx++; renderQ(); };
+    const wa=$("#whyAI"); if(wa) wa.onclick=()=>askAbout(`En la autoevaluación respondí "${q.o[i]}" a la pregunta "${q.q}". La respuesta correcta es "${q.o[q.a]}". Explícame por qué, con un ejemplo aplicado a la medicina.`, SEMANAS.concat(PAES).some(x=>x.id===q.s)?q.s:null);
+    $("#score").textContent = `Aciertos ${qScore}/${qDone} · Pregunta ${qIdx+1} de ${qList.length}`;
+  });
+}
+$("#genQuiz").onclick = async ()=>{
+  if(!sample) return;
+  const b=$("#genQuiz"); b.disabled=true; const o=b.textContent; b.textContent="Generando preguntas…";
+  const f = qFilter==="all" ? "all" : qFilter;
+  try{
+    const arr = await sample.json(`Crea 5 preguntas de opción múltiple NUEVAS (distintas de las obvias) para estudiantes de Medicina de 1.er nivel (asignatura TIC) sobre el siguiente contenido. Usa solo información presente en el contenido; no inventes datos. Cada pregunta con 4 opciones plausibles y una sola correcta; mezcla recuerdo y aplicación a casos de la práctica médica y de los talleres.
+Responde SOLO con un arreglo JSON de 5 objetos con esta forma: {"q": "enunciado", "o": ["A","B","C","D"], "a": 0, "w": "explicación breve de por qué es correcta"} donde "a" es el índice (0-3) de la opción correcta.
+
+CONTENIDO:
+${courseContext(f)}`, {cache:false});
+    const good = (Array.isArray(arr)?arr:[]).filter(x=>x && typeof x.q==="string" && Array.isArray(x.o) && x.o.length===4 && Number.isInteger(+x.a) && +x.a>=0 && +x.a<4)
+      .map(x=>({s:f==="all"?"ia":f, q:String(x.q), o:x.o.map(String), a:+x.a, w:String(x.w||""), ia:true}));
+    if(!good.length) throw {code:"invalid_json"};
+    good.forEach(g=>{ if(g.s!=="ia") g.src=true; });
+    qList = good.concat([]); qIdx=0; qScore=0; qDone=0;
+    extra = extra.concat(good.filter(g=>g.s!=="ia"));
+    renderQ();
+    document.querySelector("#quizBox .qsrc").textContent = "Generada con IA · verifica con tus apuntes";
+  }catch(e){
+    $("#quizBox").insertAdjacentHTML("afterbegin", `<p class="fallback" style="margin-bottom:12px">${esc(errCopy(e))}</p>`);
+    if(e && HARD.includes(e.code)) killAI();
+  }finally{ b.disabled=false; b.textContent=o; }
+};
+
+/* ============ FICHAS ============ */
+$("#fcGrid").innerHTML = FICHAS.map((f,i)=>`<button class="fc" type="button" aria-pressed="false" data-i="${i}"><span class="mono">${esc(f[0])}</span><b>${esc(f[1])}</b><p hidden>${esc(f[2])}</p><span class="tap">Toca para ver la definición</span></button>`).join("");
+$("#fcGrid").querySelectorAll(".fc").forEach(c=>c.onclick=()=>{ const on=c.getAttribute("aria-pressed")!=="true"; c.setAttribute("aria-pressed",on); c.querySelector("p").hidden=!on; c.querySelector(".tap").textContent = on?"Toca para ocultar":"Toca para ver la definición"; });
+
+/* ============ INICIO ============ */
+renderStarters(); welcome(); renderWeekTabs(); renderWeek(); renderPaeTabs(); renderPae(); startQuiz();
+show((location.hash||"").slice(1));
+setAI("wait");
+(async()=>{
+  let cs=null;
+  if(window.claude && window.claude.use){ try{ cs = await window.claude.use("sample"); }catch(_){ cs=null; } }
+  if(cs){ enableAI(wrapClaude(cs)); return; }
+  const k = lsGet(LS_KEY);
+  if(k){ enableAI(makeGemini(k)); $("#keyState").textContent="Clave guardada en este navegador. El tutor IA está activo."; }
+  else killAI();
+})();
+</script>
+</body>
+</html>
